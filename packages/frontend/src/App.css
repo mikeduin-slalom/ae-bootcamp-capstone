@@ -814,6 +814,15 @@ input:focus-visible {
   text-align: center;
 }
 
+/* Constrain NFL team logo size in player row */
+.draft-player-row__team-logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .draft-player-row__stat {
   font-size: 0.78rem;
   color: #3a5a50;
