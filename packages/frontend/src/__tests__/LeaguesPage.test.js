@@ -34,6 +34,7 @@ const leagueListPayload = {
 describe('LeaguesPage', () => {
   beforeEach(() => {
     jest.spyOn(leaguesService, 'listLeagues').mockResolvedValue(leagueListPayload);
+    jest.spyOn(leaguesService, 'listMyLeagues').mockResolvedValue({ data: [] });
     jest.spyOn(leaguesService, 'joinLeague').mockResolvedValue({ success: true });
     jest.spyOn(leaguesService, 'acceptInvitation').mockResolvedValue({ success: true });
     jest.spyOn(leaguesService, 'requestToJoin').mockResolvedValue({ success: true });
@@ -53,11 +54,9 @@ describe('LeaguesPage', () => {
     );
 
     expect(await screen.findByText(/you are currently browsing as a guest/i)).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: /join league/i }));
-    expect(await screen.findByText(/please sign in to join leagues/i)).toBeInTheDocument();
   });
 
-  it('joins a joinable league for authenticated users', async () => {
+  it('renders a table element after loading', async () => {
     mockUseAuth.mockReturnValue({ isAuthenticated: true });
 
     render(
@@ -67,7 +66,74 @@ describe('LeaguesPage', () => {
     );
 
     await screen.findByText(/weekend warriors/i);
-    fireEvent.click(screen.getByRole('button', { name: /join league/i }));
+    expect(screen.getByRole('table')).toBeInTheDocument();
+  });
+
+  it('calls listLeagues and listMyLeagues in parallel for authenticated users', async () => {
+    mockUseAuth.mockReturnValue({ isAuthenticated: true });
+
+    render(
+      <MemoryRouter>
+        <LeaguesPage />
+      </MemoryRouter>
+    );
+
+    await screen.findByText(/weekend warriors/i);
+    expect(leaguesService.listLeagues).toHaveBeenCalledTimes(1);
+    expect(leaguesService.listMyLeagues).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not call listMyLeagues for unauthenticated users', async () => {
+    mockUseAuth.mockReturnValue({ isAuthenticated: false });
+
+    render(
+      <MemoryRouter>
+        <LeaguesPage />
+      </MemoryRouter>
+    );
+
+    await screen.findByText(/weekend warriors/i);
+    expect(leaguesService.listLeagues).toHaveBeenCalledTimes(1);
+    expect(leaguesService.listMyLeagues).not.toHaveBeenCalled();
+  });
+
+  it('shows empty-state message when leagues list is empty', async () => {
+    mockUseAuth.mockReturnValue({ isAuthenticated: true });
+    leaguesService.listLeagues.mockResolvedValue({ data: [] });
+
+    render(
+      <MemoryRouter>
+        <LeaguesPage />
+      </MemoryRouter>
+    );
+
+    expect(await screen.findByText(/no leagues available/i)).toBeInTheDocument();
+  });
+
+  it('shows Sign Up button for joinable leagues when authenticated', async () => {
+    mockUseAuth.mockReturnValue({ isAuthenticated: true });
+
+    render(
+      <MemoryRouter>
+        <LeaguesPage />
+      </MemoryRouter>
+    );
+
+    await screen.findByText(/weekend warriors/i);
+    expect(screen.getByRole('button', { name: /sign up/i })).toBeInTheDocument();
+  });
+
+  it('calls joinLeague and shows success feedback when Sign Up is clicked', async () => {
+    mockUseAuth.mockReturnValue({ isAuthenticated: true });
+
+    render(
+      <MemoryRouter>
+        <LeaguesPage />
+      </MemoryRouter>
+    );
+
+    await screen.findByText(/weekend warriors/i);
+    fireEvent.click(screen.getByRole('button', { name: /sign up/i }));
 
     await waitFor(() => {
       expect(leaguesService.joinLeague).toHaveBeenCalledWith('league-joinable-1');
@@ -75,7 +141,37 @@ describe('LeaguesPage', () => {
     });
   });
 
-  it('shows invitation token failure feedback', async () => {
+  it('shows warning feedback when unauthenticated user clicks Sign Up', async () => {
+    mockUseAuth.mockReturnValue({ isAuthenticated: false });
+
+    render(
+      <MemoryRouter>
+        <LeaguesPage />
+      </MemoryRouter>
+    );
+
+    await screen.findByText(/weekend warriors/i);
+    fireEvent.click(screen.getByRole('button', { name: /sign up/i }));
+
+    expect(await screen.findByText(/please sign in to join leagues/i)).toBeInTheDocument();
+  });
+
+  it('shows "Joined" indicator for leagues the user has already joined', async () => {
+    mockUseAuth.mockReturnValue({ isAuthenticated: true });
+    leaguesService.listMyLeagues.mockResolvedValue({ data: ['league-joinable-1'] });
+
+    render(
+      <MemoryRouter>
+        <LeaguesPage />
+      </MemoryRouter>
+    );
+
+    await screen.findByText(/weekend warriors/i);
+    expect(screen.getByText(/joined/i)).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /sign up/i })).not.toBeInTheDocument();
+  });
+
+  it('shows invitation token failure via FeedbackBanner', async () => {
     mockUseAuth.mockReturnValue({ isAuthenticated: true });
     leaguesService.acceptInvitation.mockRejectedValue({
       response: { data: { error: { message: 'Invitation has expired.' } } }
@@ -88,15 +184,16 @@ describe('LeaguesPage', () => {
     );
 
     await screen.findByText(/friends invitational/i);
-    fireEvent.change(screen.getByLabelText(/invitation token/i), {
-      target: { value: 'invite-expired-token' }
-    });
+
+    // Toggle the invite input on the private league row
+    fireEvent.click(screen.getByRole('button', { name: /have an invite/i }));
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'invite-expired-token' } });
     fireEvent.click(screen.getByRole('button', { name: /accept invitation/i }));
 
     expect(await screen.findByText(/invitation has expired/i)).toBeInTheDocument();
   });
 
-  it('shows request pending feedback for private leagues', async () => {
+  it('shows request pending feedback for private leagues via FeedbackBanner', async () => {
     mockUseAuth.mockReturnValue({ isAuthenticated: true });
 
     render(
@@ -110,4 +207,32 @@ describe('LeaguesPage', () => {
 
     expect(await screen.findByText(/join request submitted and pending review/i)).toBeInTheDocument();
   });
+
+  it('gracefully degrades when listMyLeagues fails — still renders table', async () => {
+    mockUseAuth.mockReturnValue({ isAuthenticated: true });
+    leaguesService.listMyLeagues.mockRejectedValue(new Error('Network error'));
+
+    render(
+      <MemoryRouter>
+        <LeaguesPage />
+      </MemoryRouter>
+    );
+
+    await screen.findByText(/weekend warriors/i);
+    expect(screen.getByRole('table')).toBeInTheDocument();
+  });
+
+  it('shows error FeedbackBanner when listLeagues fails', async () => {
+    mockUseAuth.mockReturnValue({ isAuthenticated: true });
+    leaguesService.listLeagues.mockRejectedValue(new Error('Network error'));
+
+    render(
+      <MemoryRouter>
+        <LeaguesPage />
+      </MemoryRouter>
+    );
+
+    expect(await screen.findByText(/could not load leagues right now/i)).toBeInTheDocument();
+  });
 });
+

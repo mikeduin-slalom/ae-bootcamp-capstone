@@ -147,8 +147,15 @@ function requestToJoin(leagueId, userId) {
   };
 }
 
+function getUserLeagueIds(userId) {
+  return memberships
+    .filter((membership) => membership.userId === userId)
+    .map((membership) => membership.leagueId);
+}
+
 module.exports = {
   joinLeague,
   acceptInvitation,
-  requestToJoin
+  requestToJoin,
+  getUserLeagueIds
 };

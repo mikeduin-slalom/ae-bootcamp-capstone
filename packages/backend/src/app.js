@@ -6,7 +6,8 @@ const { leagues } = require('./services/dataStore');
 const {
   joinLeague,
   acceptInvitation,
-  requestToJoin
+  requestToJoin,
+  getUserLeagueIds
 } = require('./services/leagueAccessService');
 const { recordAuditEvent } = require('./services/auditLogService');
 
@@ -179,6 +180,14 @@ app.get('/api/leagues', (req, res) => {
   res.status(200).json({
     success: true,
     data: leagues
+  });
+});
+
+app.get('/api/leagues/my', requireAuth, (req, res) => {
+  const leagueIds = getUserLeagueIds(req.auth.user.id);
+  return res.status(200).json({
+    success: true,
+    data: leagueIds
   });
 });
 

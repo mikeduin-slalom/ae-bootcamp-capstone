@@ -1,25 +1,45 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import FeedbackBanner from '../components/FeedbackBanner';
-import PrivateLeagueActions from '../components/PrivateLeagueActions';
+import LeaguesTable from '../components/LeaguesTable';
 import { ROUTES } from '../constants/routes';
 import { useAuth } from '../context/AuthContext';
 import {
   acceptInvitation,
   joinLeague,
   listLeagues,
+  listMyLeagues,
   requestToJoin
 } from '../services/leaguesService';
 
 function LeaguesPage() {
   const { isAuthenticated } = useAuth();
   const [leagues, setLeagues] = useState([]);
+  const [joinedLeagueIds, setJoinedLeagueIds] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState({ type: 'info', message: '' });
 
   const fetchLeagues = async () => {
-    const response = await listLeagues();
-    setLeagues(response?.data || []);
+    if (isAuthenticated) {
+      const [leaguesResult, myLeaguesResult] = await Promise.allSettled([
+        listLeagues(),
+        listMyLeagues()
+      ]);
+
+      if (leaguesResult.status === 'fulfilled') {
+        setLeagues(leaguesResult.value?.data || []);
+      } else {
+        throw leaguesResult.reason;
+      }
+
+      if (myLeaguesResult.status === 'fulfilled') {
+        setJoinedLeagueIds(new Set(myLeaguesResult.value?.data || []));
+      }
+      // if listMyLeagues rejects, gracefully default to empty set (already initialized)
+    } else {
+      const response = await listLeagues();
+      setLeagues(response?.data || []);
+    }
   };
 
   useEffect(() => {
@@ -33,16 +53,8 @@ function LeaguesPage() {
       .finally(() => {
         setLoading(false);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const joinableLeagues = useMemo(
-    () => leagues.filter((league) => league.accessType === 'joinable'),
-    [leagues]
-  );
-  const privateLeagues = useMemo(
-    () => leagues.filter((league) => league.accessType === 'private'),
-    [leagues]
-  );
 
   const handleJoin = async (leagueId) => {
     if (!isAuthenticated) {
@@ -118,40 +130,16 @@ function LeaguesPage() {
       )}
       <FeedbackBanner type={feedback.type} message={feedback.message} />
 
-      <h2>Joinable Leagues</h2>
-      <ul className="league-list">
-        {joinableLeagues.map((league) => (
-          <li key={league.id} className="league-card">
-            <h3>{league.name}</h3>
-            <p>
-              Status: {league.status} | Members: {league.memberCount}/{league.maxEntrants}
-            </p>
-            <button type="button" onClick={() => handleJoin(league.id)}>
-              Join League
-            </button>
-          </li>
-        ))}
-      </ul>
-
-      <h2>Private Leagues</h2>
-      <ul className="league-list">
-        {privateLeagues.map((league) => (
-          <li key={league.id} className="league-card">
-            <h3>{league.name}</h3>
-            <p>
-              Status: {league.status} | Members: {league.memberCount}/{league.maxEntrants}
-            </p>
-            <PrivateLeagueActions
-              leagueId={league.id}
-              isAuthenticated={isAuthenticated}
-              onAcceptInvitation={handleAcceptInvitation}
-              onRequestJoin={() => handleRequestJoin(league.id)}
-            />
-          </li>
-        ))}
-      </ul>
+      <LeaguesTable
+        leagues={leagues}
+        joinedLeagueIds={joinedLeagueIds}
+        onJoin={handleJoin}
+        onRequestJoin={handleRequestJoin}
+        onAcceptInvitation={handleAcceptInvitation}
+      />
     </section>
   );
 }
 
 export default LeaguesPage;
+

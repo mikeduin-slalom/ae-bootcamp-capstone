@@ -4,6 +4,10 @@ export async function listLeagues() {
   return apiClient.get('/leagues');
 }
 
+export async function listMyLeagues() {
+  return apiClient.get('/leagues/my');
+}
+
 export async function joinLeague(leagueId) {
   return apiClient.post(`/leagues/${leagueId}/join`);
 }

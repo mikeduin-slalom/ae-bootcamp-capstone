@@ -178,6 +178,55 @@ describe('Backend API', () => {
     });
   });
 
+  describe('My leagues endpoint', () => {
+    it('returns 401 when not authenticated', async () => {
+      const response = await request(app).get('/api/leagues/my');
+
+      expect(response.status).toBe(401);
+      expect(response.body.success).toBe(false);
+      expect(response.body.error.code).toBe('UNAUTHORIZED');
+    });
+
+    it('returns 401 with invalid token', async () => {
+      const response = await request(app)
+        .get('/api/leagues/my')
+        .set('Authorization', 'Bearer not-a-real-token');
+
+      expect(response.status).toBe(401);
+      expect(response.body.success).toBe(false);
+      expect(response.body.error.code).toBe('UNAUTHORIZED');
+    });
+
+    it('returns empty array for authenticated user with no memberships', async () => {
+      const sessionId = await loginAsAlex();
+
+      const response = await request(app)
+        .get('/api/leagues/my')
+        .set('Authorization', `Bearer ${sessionId}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.success).toBe(true);
+      expect(Array.isArray(response.body.data)).toBe(true);
+      expect(response.body.data).toHaveLength(0);
+    });
+
+    it('returns joined league IDs for authenticated user with memberships', async () => {
+      const loginResponse = await request(app)
+        .post('/api/auth/login')
+        .send({ email: 'casey@example.com', password: 'password123' });
+      const sessionId = loginResponse.body.data.sessionId;
+
+      const response = await request(app)
+        .get('/api/leagues/my')
+        .set('Authorization', `Bearer ${sessionId}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.success).toBe(true);
+      expect(Array.isArray(response.body.data)).toBe(true);
+      expect(response.body.data).toContain('league-private-1');
+    });
+  });
+
   describe('How to Play content endpoint', () => {
     it('returns ordered sections by sequence', async () => {
       const response = await request(app).get('/api/content/how-to-play');

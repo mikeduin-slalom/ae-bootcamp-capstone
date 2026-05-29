@@ -1,0 +1,83 @@
+openapi: 3.0.3
+info:
+  title: Leagues Table View — New Contract
+  version: 1.0.0
+  description: >
+    Documents the new endpoint introduced by the 007-leagues-table-view feature.
+    All existing /api/leagues endpoints are unchanged; see spec.md Assumptions.
+
+paths:
+  /api/leagues/my:
+    get:
+      summary: List the authenticated user's joined league IDs
+      description: >
+        Returns an array of league ID strings for all leagues the current
+        authenticated user is a member of. Used by the frontend in parallel
+        with GET /api/leagues to derive per-row "Joined" status without
+        modifying the existing listLeagues response shape.
+      operationId: listMyLeagues
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response — array of joined league IDs
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - data
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    description: League IDs the current user has membership in
+                    items:
+                      type: string
+                    example:
+                      - "league-private-1"
+        '401':
+          description: Unauthenticated — Bearer token missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: sessionId
+      description: >
+        Session token returned by POST /api/auth/login or POST /api/auth/register.
+        Pass as Authorization: Bearer <sessionId>.
+
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+        - success
+        - error
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              example: UNAUTHORIZED
+            message:
+              type: string
+              example: Authentication required.
+            details:
+              type: object
+              example: {}
