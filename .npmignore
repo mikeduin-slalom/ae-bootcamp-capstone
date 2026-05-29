@@ -1,0 +1,13 @@
+# .npmignore for Node.js/React project
+node_modules/
+dist/
+build/
+*.log
+.env*
+coverage/
+.DS_Store
+.idea/
+.vscode/
+Thumbs.db
+*.tmp
+*.swp
