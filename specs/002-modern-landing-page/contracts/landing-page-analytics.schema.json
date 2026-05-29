@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ae-bootcamp-capstone/specs/002-modern-landing-page/contracts/landing-page-analytics.schema.json",
+  "title": "Landing Page Analytics Event",
+  "description": "Schema for landing page page_view and primary CTA click events.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_name",
+    "timestamp",
+    "page_route",
+    "device_type"
+  ],
+  "properties": {
+    "event_name": {
+      "type": "string",
+      "enum": [
+        "page_view",
+        "cta_login_click",
+        "cta_browse_leagues_click",
+        "cta_how_to_play_click"
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "page_route": {
+      "type": "string",
+      "minLength": 1
+    },
+    "device_type": {
+      "type": "string",
+      "enum": [
+        "desktop",
+        "mobile",
+        "tablet",
+        "unknown"
+      ]
+    },
+    "cta_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "login",
+        "browse_leagues",
+        "how_to_play",
+        null
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "event_name": {
+            "const": "page_view"
+          }
+        },
+        "required": [
+          "event_name"
+        ]
+      },
+      "then": {
+        "properties": {
+          "cta_id": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_name": {
+            "enum": [
+              "cta_login_click",
+              "cta_browse_leagues_click",
+              "cta_how_to_play_click"
+            ]
+          }
+        },
+        "required": [
+          "event_name"
+        ]
+      },
+      "then": {
+        "required": [
+          "cta_id"
+        ],
+        "properties": {
+          "cta_id": {
+            "type": "string",
+            "enum": [
+              "login",
+              "browse_leagues",
+              "how_to_play"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
