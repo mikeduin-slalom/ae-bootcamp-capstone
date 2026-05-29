@@ -3,5 +3,6 @@ export const ROUTES = {
   login: '/login',
   register: '/register',
   leagues: '/leagues',
-  howToPlay: '/how-to-play'
+  howToPlay: '/how-to-play',
+  draftRoom: '/draft-room'
 };

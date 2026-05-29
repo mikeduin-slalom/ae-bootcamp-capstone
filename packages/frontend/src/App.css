@@ -414,3 +414,325 @@ input:focus-visible {
     opacity: 0.8;
   }
 }
+
+/* ============================================================
+   Draft Room
+   ============================================================ */
+
+.draft-room {
+  display: grid;
+  gap: 16px;
+}
+
+/* League bar */
+.draft-league-bar {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+}
+
+.draft-team-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 72px;
+  padding: 8px 6px;
+  background: #f0f6f3;
+  border: 1px solid #c8d8cd;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  font: inherit;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+
+.draft-team-slot:hover {
+  background: #dff0e8;
+  border-color: #7cbfa8;
+}
+
+.draft-team-slot--selected {
+  background: #1f4b3f;
+  border-color: #1f4b3f;
+  color: #f2f9f5;
+}
+
+.draft-team-slot--selected:hover {
+  background: #173c32;
+  border-color: #173c32;
+}
+
+.draft-team-slot__logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #2d6a58;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.draft-team-slot--selected .draft-team-slot__logo {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.draft-team-slot__name {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+  max-width: 64px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.draft-team-slot__badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  background: #e07b39;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Roster panel */
+.draft-roster-panel {
+  background: #f7fbf9;
+  border: 1px solid #bfd5c8;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.draft-roster-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.draft-roster-panel__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1f4b3f;
+  margin: 0;
+}
+
+.draft-roster-panel__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #5a7a6e;
+  font-size: 1.1rem;
+  line-height: 1;
+  border-radius: 4px;
+}
+
+.draft-roster-panel__close:hover {
+  color: #1f4b3f;
+}
+
+.draft-roster-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.draft-roster-list__item {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 0.875rem;
+}
+
+.draft-roster-list__position {
+  font-weight: 700;
+  color: #2d6a58;
+  min-width: 32px;
+}
+
+.draft-roster-panel__empty {
+  color: #7a9e93;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+/* Main draft area */
+.draft-main {
+  display: grid;
+  gap: 12px;
+}
+
+/* Pick timer */
+.draft-pick-timer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #1a1a2e;
+  color: #fff;
+  border-radius: 10px;
+  padding: 12px 18px;
+}
+
+.draft-pick-timer__countdown {
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: #ff8c42;
+}
+
+.draft-pick-timer__label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Filters */
+.draft-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: #f0f6f3;
+  border: 1px solid #c8d8cd;
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.draft-filters__group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.draft-filters__label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #4a7a6a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.draft-filters__select {
+  border: 1px solid #8aa496;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font: inherit;
+  font-size: 0.85rem;
+  background: #fff;
+  color: #1b1b1b;
+  cursor: pointer;
+}
+
+.draft-filters__clear {
+  margin-top: auto;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  background: #fff;
+  border: 1px solid #8aa496;
+  border-radius: 6px;
+  color: #1f4b3f;
+  cursor: pointer;
+}
+
+.draft-filters__clear:hover {
+  background: #e8f4ef;
+}
+
+/* Player list */
+.draft-player-list {
+  display: grid;
+  gap: 8px;
+}
+
+.draft-player-list__empty {
+  text-align: center;
+  padding: 24px;
+  color: #7a9e93;
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+.draft-player-list__scroll {
+  display: grid;
+  gap: 4px;
+  max-height: 420px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+/* Player row */
+.draft-player-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: #fff;
+  border: 1px solid #d6d8c8;
+  border-radius: 8px;
+  transition: background 120ms ease;
+}
+
+.draft-player-row:hover {
+  background: #f0f9f5;
+}
+
+.draft-player-row__position {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fff;
+  background: #2d6a58;
+  border-radius: 4px;
+  padding: 2px 6px;
+  min-width: 34px;
+  text-align: center;
+}
+
+.draft-player-row__name {
+  flex: 1;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.draft-player-row__team {
+  font-size: 0.78rem;
+  color: #5a7a6e;
+}
+
+.draft-player-row__draft-btn {
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: #1f4b3f;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 150ms ease;
+}
+
+.draft-player-row__draft-btn:hover:not(:disabled) {
+  background: #173c32;
+}
+

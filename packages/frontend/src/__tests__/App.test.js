@@ -27,6 +27,14 @@ jest.mock('../pages/HowToPlayPage', () => function MockHowToPlayPage() {
   );
 });
 
+jest.mock('../pages/DraftRoomPage', () => function MockDraftRoomPage() {
+  return (
+    <section className="page-card">
+      <h1>Draft Room</h1>
+    </section>
+  );
+});
+
 describe('App', () => {
   afterEach(() => {
     localStorage.clear();

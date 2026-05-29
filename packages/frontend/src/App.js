@@ -4,6 +4,7 @@ import './App.css';
 import MainNav from './components/MainNav';
 import { ROUTES } from './constants/routes';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import DraftRoomPage from './pages/DraftRoomPage';
 import HomePage from './pages/HomePage';
 import HowToPlayPage from './pages/HowToPlayPage';
 import LeaguesPage from './pages/LeaguesPage';
@@ -33,6 +34,7 @@ function AppShell() {
           <Route path={ROUTES.register} element={<RegisterPage />} />
           <Route path={ROUTES.leagues} element={<LeaguesPage />} />
           <Route path={ROUTES.howToPlay} element={<HowToPlayPage />} />
+          <Route path={ROUTES.draftRoom} element={<DraftRoomPage />} />
           <Route path="*" element={<Navigate to={ROUTES.home} replace />} />
         </Routes>
       </main>

@@ -73,6 +73,9 @@ describe('HomePage', () => {
     );
 
     await user.tab();
+    expect(screen.getByRole('link', { name: /draft room/i })).toHaveFocus();
+
+    await user.tab();
     expect(screen.getByRole('link', { name: /browse leagues/i })).toHaveFocus();
 
     await user.tab();
