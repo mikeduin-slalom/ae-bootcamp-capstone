@@ -21,6 +21,6 @@ This repository is a capstone project baseline using spec-driven development.
 - Keep changes small, testable, and aligned with docs in `docs/`.
 
 <!-- SPECKIT START -->
-Current implementation plan: `specs/007-leagues-table-view/plan.md`.
+Current implementation plan: `specs/008-nfl-logo-sync/plan.md`.
 Use it for technologies, project structure, shell commands, and implementation constraints.
 <!-- SPECKIT END -->

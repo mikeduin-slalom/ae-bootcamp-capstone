@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import DraftPlayerRow from '../components/DraftPlayerRow';
 
 const noop = () => {};
@@ -104,5 +104,45 @@ describe('DraftPlayerRow — stat columns', () => {
     expect(passYds).toBeInTheDocument();
     expect(rushYds).toBeInTheDocument();
     expect(recYds).toBeInTheDocument();
+  });
+});
+
+describe('DraftPlayerRow — team logo display', () => {
+  it('renders a team logo <img> when logoPath is provided', () => {
+    render(<DraftPlayerRow player={qbPlayer} logoPath="/logos/nfl/kc.png" onDraft={noop} />);
+    const img = screen.getByRole('img');
+    expect(img).toBeInTheDocument();
+    expect(img).toHaveAttribute('src', '/logos/nfl/kc.png');
+  });
+
+  it('renders descriptive alt text on the logo image', () => {
+    render(<DraftPlayerRow player={qbPlayer} logoPath="/logos/nfl/kc.png" onDraft={noop} />);
+    const img = screen.getByRole('img');
+    expect(img.getAttribute('alt')).toMatch(/kansas city.*vikings|vikings.*kansas city|kansas city.*logo|kc.*logo/i);
+    // More specifically the alt should reference location + name of the NFL team
+    expect(img.getAttribute('alt').toLowerCase()).toContain('logo');
+  });
+
+  it('does not show abbreviation text when the logo image is displayed', () => {
+    render(<DraftPlayerRow player={qbPlayer} logoPath="/logos/nfl/kc.png" onDraft={noop} />);
+    expect(screen.getByRole('img')).toBeInTheDocument();
+    expect(screen.queryByText('KC')).not.toBeInTheDocument();
+  });
+
+  it('hides <img> and shows abbreviation when logo fails to load (onError fallback)', () => {
+    render(<DraftPlayerRow player={qbPlayer} logoPath="/logos/nfl/kc.png" onDraft={noop} />);
+    const img = screen.getByRole('img');
+
+    // Fire the error event to trigger fallback
+    fireEvent.error(img);
+
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
+    expect(screen.getByText('KC')).toBeInTheDocument();
+  });
+
+  it('shows abbreviation text only (no img) when logoPath is null', () => {
+    render(<DraftPlayerRow player={qbPlayer} logoPath={null} onDraft={noop} />);
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
+    expect(screen.getByText('KC')).toBeInTheDocument();
   });
 });

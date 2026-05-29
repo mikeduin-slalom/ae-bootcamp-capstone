@@ -331,4 +331,47 @@ describe('Backend API', () => {
       expect(response.body.data.user).not.toHaveProperty('passwordHash');
     });
   });
+
+  describe('NFL Teams endpoint', () => {
+    it('returns 200 with success:true and a data array', async () => {
+      const response = await request(app).get('/api/nfl-teams');
+
+      expect(response.status).toBe(200);
+      expect(response.body.success).toBe(true);
+      expect(Array.isArray(response.body.data)).toBe(true);
+    });
+
+    it('does not require authentication', async () => {
+      const response = await request(app).get('/api/nfl-teams');
+
+      expect(response.status).toBe(200);
+    });
+
+    it('returns team objects with expected fields when data exists', async () => {
+      // Seed a team directly via nflTeamsStore
+      const { upsertTeam } = require('../src/services/nflTeamsStore');
+      upsertTeam({
+        espnTeamId: '16',
+        name: 'Vikings',
+        location: 'Minnesota',
+        abbreviation: 'MIN',
+        color: '4f2683',
+        alternateColor: 'ffc62f',
+        logoPath: '/logos/nfl/min.png',
+      });
+
+      const response = await request(app).get('/api/nfl-teams');
+
+      expect(response.status).toBe(200);
+      expect(response.body.success).toBe(true);
+      const team = response.body.data.find(t => t.abbreviation === 'MIN');
+      expect(team).toBeDefined();
+      expect(team).toHaveProperty('id');
+      expect(team).toHaveProperty('espnTeamId', '16');
+      expect(team).toHaveProperty('name', 'Vikings');
+      expect(team).toHaveProperty('location', 'Minnesota');
+      expect(team).toHaveProperty('abbreviation', 'MIN');
+      expect(team).toHaveProperty('logoPath', '/logos/nfl/min.png');
+    });
+  });
 });

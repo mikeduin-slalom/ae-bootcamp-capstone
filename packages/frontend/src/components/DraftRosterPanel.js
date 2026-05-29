@@ -20,7 +20,7 @@ function DraftRosterPanel({ team, roster, onClose }) {
         <ul className="draft-roster-list" aria-label={`${team.name} roster`}>
           {roster.map(player => (
             <li key={player.id} className="draft-roster-list__item">
-              <span className="draft-roster-list__position">{player.position}</span>
+              <span className="draft-roster-list__position" data-position={player.position}>{player.position}</span>
               <span className="draft-roster-list__name">{player.name}</span>
             </li>
           ))}

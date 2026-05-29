@@ -10,6 +10,7 @@ const {
   getUserLeagueIds
 } = require('./services/leagueAccessService');
 const { recordAuditEvent } = require('./services/auditLogService');
+const nflTeamsStore = require('./services/nflTeamsStore');
 
 // Initialize express app
 const app = express();
@@ -180,6 +181,14 @@ app.get('/api/leagues', (req, res) => {
   res.status(200).json({
     success: true,
     data: leagues
+  });
+});
+
+app.get('/api/nfl-teams', (req, res) => {
+  const teams = nflTeamsStore.getAllTeams();
+  res.status(200).json({
+    success: true,
+    data: teams
   });
 });
 

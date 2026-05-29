@@ -611,6 +611,13 @@ input:focus-visible {
   min-width: 32px;
 }
 
+.draft-roster-list__position[data-position="QB"]  { color: #c0392b; }
+.draft-roster-list__position[data-position="RB"]  { color: #1d6fa4; }
+.draft-roster-list__position[data-position="WR"]  { color: #2d6a58; }
+.draft-roster-list__position[data-position="TE"]  { color: #6b3fa0; }
+.draft-roster-list__position[data-position="K"]   { color: #b56a0f; }
+.draft-roster-list__position[data-position="DEF"] { color: #546e6a; }
+
 .draft-roster-panel__empty {
   color: #7a9e93;
   font-style: italic;
@@ -786,6 +793,13 @@ input:focus-visible {
   min-width: 34px;
   text-align: center;
 }
+
+.draft-player-row__position[data-position="QB"] { background: #c0392b; }
+.draft-player-row__position[data-position="RB"] { background: #1d6fa4; }
+.draft-player-row__position[data-position="WR"] { background: #2d6a58; }
+.draft-player-row__position[data-position="TE"] { background: #6b3fa0; }
+.draft-player-row__position[data-position="K"]  { background: #b56a0f; }
+.draft-player-row__position[data-position="DEF"] { background: #546e6a; }
 
 .draft-player-row__name {
   flex: 1;

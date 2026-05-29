@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "nodemon src/index.js",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "sync:nfl-logos": "node scripts/syncNflLogos.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

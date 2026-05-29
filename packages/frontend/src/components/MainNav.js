@@ -17,6 +17,7 @@ function MainNav() {
       <nav className="main-nav" aria-label="Primary">
         <NavLink to={ROUTES.home}>Home</NavLink>
         <NavLink to={ROUTES.leagues}>Leagues</NavLink>
+        <NavLink to={ROUTES.draftRoom}>Draft Room</NavLink>
         <NavLink to={ROUTES.howToPlay}>How to Play</NavLink>
       </nav>
 

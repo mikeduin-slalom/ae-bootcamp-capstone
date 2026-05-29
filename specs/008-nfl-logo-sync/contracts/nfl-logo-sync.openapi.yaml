@@ -1,0 +1,143 @@
+openapi: 3.0.3
+info:
+  title: NFL Logo Sync — NFL Teams API
+  version: 1.0.0
+  description: >
+    Public endpoint that returns all persisted NFL teams with their local logo paths.
+    Used by the Draft Room frontend to display team logos on player cards and in
+    the NFL team filter. No authentication is required.
+
+servers:
+  - url: http://localhost:3030
+    description: Local development
+
+paths:
+  /api/nfl-teams:
+    get:
+      operationId: listNflTeams
+      summary: List all NFL teams with local logo paths
+      description: >
+        Returns an array of all NFL team records stored in the `nfl_teams` database
+        table. Each record includes the team abbreviation, name, location, primary
+        color, and the root-relative path to the locally stored logo PNG.
+        `logoPath` is `null` if the logo sync has not been run for that team.
+      tags:
+        - NFL Teams
+      security: []
+      responses:
+        "200":
+          description: Array of NFL team objects
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - data
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/NflTeam"
+              example:
+                success: true
+                data:
+                  - id: 1
+                    espnTeamId: "16"
+                    name: "Vikings"
+                    location: "Minnesota"
+                    abbreviation: "MIN"
+                    color: "4f2683"
+                    alternateColor: "ffc62f"
+                    logoPath: "/logos/nfl/min.png"
+                  - id: 2
+                    espnTeamId: "1"
+                    name: "Falcons"
+                    location: "Atlanta"
+                    abbreviation: "ATL"
+                    color: "a71930"
+                    alternateColor: "000000"
+                    logoPath: "/logos/nfl/atl.png"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    NflTeam:
+      type: object
+      required:
+        - id
+        - espnTeamId
+        - name
+        - location
+        - abbreviation
+      properties:
+        id:
+          type: integer
+          description: Internal surrogate key
+          example: 1
+        espnTeamId:
+          type: string
+          description: ESPN's numeric team identifier
+          example: "16"
+        name:
+          type: string
+          description: Team name (without location prefix)
+          example: "Vikings"
+        location:
+          type: string
+          description: City or region name
+          example: "Minnesota"
+        abbreviation:
+          type: string
+          description: Uppercase team abbreviation
+          example: "MIN"
+        color:
+          type: string
+          nullable: true
+          description: Primary team color as 6-character hex without '#'
+          example: "4f2683"
+        alternateColor:
+          type: string
+          nullable: true
+          description: Alternate team color as 6-character hex without '#'
+          example: "ffc62f"
+        logoPath:
+          type: string
+          nullable: true
+          description: >
+            Root-relative URL to the locally stored PNG logo file.
+            Null if the logo sync has not yet been run for this team.
+          example: "/logos/nfl/min.png"
+
+    ErrorResponse:
+      type: object
+      required:
+        - success
+        - error
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              example: "INTERNAL_ERROR"
+            message:
+              type: string
+              example: "An unexpected error occurred."
+            details:
+              type: object
+              additionalProperties: true

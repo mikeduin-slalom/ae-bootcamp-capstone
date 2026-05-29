@@ -6,6 +6,7 @@ function DraftPlayerList({
   availablePlayers,
   positionFilter,
   nflTeamFilter,
+  nflTeamLogoMap,
   onDraft,
   onPositionChange,
   onNflTeamChange,
@@ -51,7 +52,11 @@ function DraftPlayerList({
           <div className="draft-player-list__scroll" role="list" aria-label="Available players">
             {filteredPlayers.map(player => (
               <div key={player.id} role="listitem">
-                <DraftPlayerRow player={player} onDraft={onDraft} />
+                <DraftPlayerRow
+                  player={player}
+                  logoPath={nflTeamLogoMap ? (nflTeamLogoMap.get(player.nflTeamAbbr) ?? null) : null}
+                  onDraft={onDraft}
+                />
               </div>
             ))}
           </div>

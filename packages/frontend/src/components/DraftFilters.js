@@ -10,7 +10,6 @@ function DraftFilters({
   onNflTeamChange,
   onClearFilters,
 }) {
-  // Build unique sorted NFL team names from the full available player pool
   const nflTeams = Array.from(
     new Set(availablePlayers.map(p => p.nflTeam))
   ).sort();

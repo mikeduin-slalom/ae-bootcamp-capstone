@@ -4,12 +4,20 @@ import DraftLeagueBar from '../components/DraftLeagueBar';
 import DraftRosterPanel from '../components/DraftRosterPanel';
 import DraftPlayerList from '../components/DraftPlayerList';
 import DraftPickTimer from '../components/DraftPickTimer';
+import { fetchNflTeams } from '../services/nflTeamsService';
 
 const PICK_TIMER_SECONDS = 300;
 
 function DraftRoomPage() {
   const [state, dispatch] = useReducer(draftReducer, initialDraftState);
   const [secondsLeft, setSecondsLeft] = useState(PICK_TIMER_SECONDS);
+  const [nflTeamLogoMap, setNflTeamLogoMap] = useState(new Map());
+
+  useEffect(() => {
+    fetchNflTeams().then(teams => {
+      setNflTeamLogoMap(new Map(teams.map(t => [t.abbreviation, t.logoPath])));
+    }).catch(() => {});
+  }, []);
 
   // Reset timer when pick advances
   useEffect(() => {
@@ -71,6 +79,7 @@ function DraftRoomPage() {
           availablePlayers={state.availablePlayers}
           positionFilter={state.positionFilter}
           nflTeamFilter={state.nflTeamFilter}
+          nflTeamLogoMap={nflTeamLogoMap}
           onDraft={playerId => dispatch({ type: 'DRAFT_PLAYER', payload: { playerId } })}
           onPositionChange={value => dispatch({ type: 'SET_POSITION_FILTER', payload: { value } })}
           onNflTeamChange={value => dispatch({ type: 'SET_NFL_TEAM_FILTER', payload: { value } })}
