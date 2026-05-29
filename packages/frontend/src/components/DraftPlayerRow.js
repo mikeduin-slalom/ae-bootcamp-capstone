@@ -6,6 +6,10 @@ function DraftPlayerRow({ player, onDraft }) {
       <span className="draft-player-row__position">{player.position}</span>
       <span className="draft-player-row__name">{player.name}</span>
       <span className="draft-player-row__team">{player.nflTeamAbbr}</span>
+      <span className="draft-player-row__stat draft-player-row__stat--tds">{player.touchdowns}</span>
+      <span className="draft-player-row__stat draft-player-row__stat--pass-yards">{player.passYards}</span>
+      <span className="draft-player-row__stat draft-player-row__stat--rush-yards">{player.rushYards}</span>
+      <span className="draft-player-row__stat draft-player-row__stat--rec-yards">{player.recYards}</span>
       <button
         className="draft-player-row__draft-btn"
         onClick={() => onDraft(player.id)}

@@ -21,6 +21,6 @@ This repository is a capstone project baseline using spec-driven development.
 - Keep changes small, testable, and aligned with docs in `docs/`.
 
 <!-- SPECKIT START -->
-Current implementation plan: `specs/005-draft-room/plan.md`.
+Current implementation plan: `specs/006-draft-room-enhancements/plan.md`.
 Use it for technologies, project structure, shell commands, and implementation constraints.
 <!-- SPECKIT END -->

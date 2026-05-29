@@ -466,6 +466,47 @@ input:focus-visible {
   border-color: #173c32;
 }
 
+/* Active (on the clock) state — WCAG 2.1 AA contrast */
+.draft-team-slot--active {
+  background: #fff7e0;
+  border-color: #d4a017;
+  border-width: 2px;
+  box-shadow: 0 0 0 2px rgba(212, 160, 23, 0.35);
+}
+
+.draft-team-slot--active:hover {
+  background: #fff0c0;
+  border-color: #b88a00;
+}
+
+.draft-team-slot-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.draft-team-slot__on-the-clock {
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: #7a5400;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* Draft Complete banner */
+.draft-league-bar__complete-banner {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1f4b3f;
+  background: #d4f0e4;
+  border: 1px solid #7cbfa8;
+  border-radius: 8px;
+  padding: 6px 14px;
+  white-space: nowrap;
+}
+
 .draft-team-slot__logo {
   width: 34px;
   height: 34px;
@@ -681,6 +722,44 @@ input:focus-visible {
   scrollbar-width: thin;
 }
 
+/* Player list header */
+.draft-player-list__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 12px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #5a7a6e;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #d6d8c8;
+  margin-bottom: 2px;
+}
+
+.draft-player-list__header-pos {
+  min-width: 34px;
+  text-align: center;
+}
+
+.draft-player-list__header-name {
+  flex: 1;
+}
+
+.draft-player-list__header-team {
+  min-width: 38px;
+  text-align: center;
+}
+
+.draft-player-list__header-stat {
+  min-width: 54px;
+  text-align: center;
+}
+
+.draft-player-list__header-action {
+  min-width: 58px;
+}
+
 /* Player row */
 .draft-player-row {
   display: flex;
@@ -717,6 +796,16 @@ input:focus-visible {
 .draft-player-row__team {
   font-size: 0.78rem;
   color: #5a7a6e;
+  min-width: 38px;
+  text-align: center;
+}
+
+.draft-player-row__stat {
+  font-size: 0.78rem;
+  color: #3a5a50;
+  min-width: 54px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 
 .draft-player-row__draft-btn {

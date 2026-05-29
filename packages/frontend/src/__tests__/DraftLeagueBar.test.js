@@ -124,3 +124,82 @@ describe('DraftLeagueBar', () => {
     expect(badges).toHaveLength(0);
   });
 });
+
+describe('DraftLeagueBar — activeTeamId and draftComplete props', () => {
+  it('passes isActive=true to the matching slot when activeTeamId is set', () => {
+    render(
+      <DraftLeagueBar
+        teams={MOCK_TEAMS}
+        rosters={emptyRosters}
+        selectedTeamId={null}
+        onSelectTeam={noop}
+        activeTeamId={MOCK_TEAMS[0].id}
+        draftComplete={false}
+      />
+    );
+    const activeBtn = screen.getByRole('button', {
+      name: new RegExp(MOCK_TEAMS[0].name, 'i'),
+    });
+    expect(activeBtn).toHaveClass('draft-team-slot--active');
+  });
+
+  it('does not apply active class to non-active team slots', () => {
+    render(
+      <DraftLeagueBar
+        teams={MOCK_TEAMS}
+        rosters={emptyRosters}
+        selectedTeamId={null}
+        onSelectTeam={noop}
+        activeTeamId={MOCK_TEAMS[0].id}
+        draftComplete={false}
+      />
+    );
+    const inactiveBtn = screen.getByRole('button', {
+      name: new RegExp(MOCK_TEAMS[1].name, 'i'),
+    });
+    expect(inactiveBtn).not.toHaveClass('draft-team-slot--active');
+  });
+
+  it('renders exactly one "ON THE CLOCK" label when draftComplete is false', () => {
+    render(
+      <DraftLeagueBar
+        teams={MOCK_TEAMS}
+        rosters={emptyRosters}
+        selectedTeamId={null}
+        onSelectTeam={noop}
+        activeTeamId={MOCK_TEAMS[2].id}
+        draftComplete={false}
+      />
+    );
+    const labels = screen.getAllByText(/on the clock/i);
+    expect(labels).toHaveLength(1);
+  });
+
+  it('renders "Draft Complete" banner when draftComplete is true', () => {
+    render(
+      <DraftLeagueBar
+        teams={MOCK_TEAMS}
+        rosters={emptyRosters}
+        selectedTeamId={null}
+        onSelectTeam={noop}
+        activeTeamId={null}
+        draftComplete={true}
+      />
+    );
+    expect(screen.getByText(/draft complete/i)).toBeInTheDocument();
+  });
+
+  it('does not render "ON THE CLOCK" label on any slot when draftComplete is true', () => {
+    render(
+      <DraftLeagueBar
+        teams={MOCK_TEAMS}
+        rosters={emptyRosters}
+        selectedTeamId={null}
+        onSelectTeam={noop}
+        activeTeamId={null}
+        draftComplete={true}
+      />
+    );
+    expect(screen.queryByText(/on the clock/i)).not.toBeInTheDocument();
+  });
+});

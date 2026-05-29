@@ -1,5 +1,5 @@
 import React, { useReducer, useState, useEffect } from 'react';
-import { draftReducer, initialDraftState } from './draftReducer';
+import { draftReducer, initialDraftState, getActiveTeam } from './draftReducer';
 import DraftLeagueBar from '../components/DraftLeagueBar';
 import DraftRosterPanel from '../components/DraftRosterPanel';
 import DraftPlayerList from '../components/DraftPlayerList';
@@ -38,6 +38,10 @@ function DraftRoomPage() {
     ? (state.rosters[state.selectedTeamId] || [])
     : [];
 
+  const activeTeamId = state.draftComplete
+    ? null
+    : (getActiveTeam(state.teams, state.currentPickIndex)?.id ?? null);
+
   return (
     <div className="draft-room page-card">
       <DraftLeagueBar
@@ -45,6 +49,8 @@ function DraftRoomPage() {
         rosters={state.rosters}
         selectedTeamId={state.selectedTeamId}
         onSelectTeam={teamId => dispatch({ type: 'SELECT_TEAM', payload: { teamId } })}
+        activeTeamId={activeTeamId}
+        draftComplete={state.draftComplete}
       />
 
       {selectedTeam && (

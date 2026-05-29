@@ -147,3 +147,40 @@ describe('DraftPlayerList — filter controls', () => {
     expect(onClearFilters).toHaveBeenCalled();
   });
 });
+
+describe('DraftPlayerList — stat columns visibility', () => {
+  it('renders stat columns on all player rows when unfiltered', () => {
+    renderList();
+    const rows = screen.getAllByTestId('player-row');
+    rows.forEach(row => {
+      expect(row.querySelector('.draft-player-row__stat--tds')).toBeInTheDocument();
+      expect(row.querySelector('.draft-player-row__stat--pass-yards')).toBeInTheDocument();
+      expect(row.querySelector('.draft-player-row__stat--rush-yards')).toBeInTheDocument();
+      expect(row.querySelector('.draft-player-row__stat--rec-yards')).toBeInTheDocument();
+    });
+  });
+
+  it('stats remain visible on all rows when a position filter is applied', () => {
+    renderList({ positionFilter: 'RB' });
+    const rows = screen.getAllByTestId('player-row');
+    rows.forEach(row => {
+      expect(row.querySelector('.draft-player-row__stat--tds')).toBeInTheDocument();
+      expect(row.querySelector('.draft-player-row__stat--pass-yards')).toBeInTheDocument();
+      expect(row.querySelector('.draft-player-row__stat--rush-yards')).toBeInTheDocument();
+      expect(row.querySelector('.draft-player-row__stat--rec-yards')).toBeInTheDocument();
+    });
+  });
+
+  it('stats remain visible after filter is cleared (no filter applied)', () => {
+    renderList({ positionFilter: null });
+    const rows = screen.getAllByTestId('player-row');
+    rows.forEach(row => {
+      expect(row.querySelector('.draft-player-row__stat--tds')).toBeInTheDocument();
+    });
+  });
+
+  it('no stat elements rendered when filter produces an empty player list', () => {
+    renderList({ availablePlayers: [] });
+    expect(document.querySelectorAll('.draft-player-row__stat--tds')).toHaveLength(0);
+  });
+});
