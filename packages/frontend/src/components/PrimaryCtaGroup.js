@@ -19,6 +19,7 @@ function PrimaryCtaGroup({ ctas, layoutMode = 'responsive', onCtaActivate }) {
           label={cta.label}
           to={cta.destinationRoute}
           variant={cta.styleVariant || 'primary'}
+          icon={cta.icon}
           onActivate={onCtaActivate}
         />
       ))}

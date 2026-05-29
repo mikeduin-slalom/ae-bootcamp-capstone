@@ -41,7 +41,7 @@ describe('App', () => {
     expect(within(primaryNav).queryByRole('link', { name: /^login$/i })).not.toBeInTheDocument();
     expect(within(primaryNav).getByRole('link', { name: /^leagues$/i })).toBeInTheDocument();
     expect(within(primaryNav).getByRole('link', { name: /^how to play$/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /build your winning fantasy season/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /play postseason fantasy football/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /^register$/i })).toBeInTheDocument();
   });
 
@@ -63,7 +63,7 @@ describe('App', () => {
     window.history.pushState({}, '', '/not-a-route');
     render(<App />);
 
-    expect(await screen.findByRole('heading', { name: /build your winning fantasy season/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /play postseason fantasy football/i })).toBeInTheDocument();
     const primaryNav = screen.getByRole('navigation', { name: /primary/i });
     expect(within(primaryNav).getByRole('link', { name: /^home$/i })).toBeInTheDocument();
     expect(within(primaryNav).queryByRole('link', { name: /^login$/i })).not.toBeInTheDocument();

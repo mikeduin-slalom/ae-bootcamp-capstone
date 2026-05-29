@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function PrimaryCtaButton({ ctaId, label, to, variant = 'primary', onActivate }) {
+function PrimaryCtaButton({ ctaId, label, to, variant = 'primary', icon, onActivate }) {
   function handleActivate() {
     if (onActivate) {
       onActivate(ctaId);
@@ -16,6 +16,7 @@ function PrimaryCtaButton({ ctaId, label, to, variant = 'primary', onActivate })
       to={to}
       onClick={handleActivate}
     >
+      {icon}
       {label}
     </Link>
   );

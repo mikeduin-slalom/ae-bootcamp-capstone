@@ -108,10 +108,8 @@ body {
   display: grid;
   gap: 20px;
   overflow: hidden;
-  border: 1px solid #bfd4c8;
-  background:
-    radial-gradient(circle at 90% 10%, rgba(255, 236, 181, 0.72), transparent 42%),
-    linear-gradient(135deg, #fdfdf9 0%, #f2f7f1 100%);
+  background: url('./assets/landing/football-hero-img.jpg') center/cover no-repeat,
+    linear-gradient(135deg, #1a1a2e, #0a3d62);
 }
 
 .landing-hero::before {
@@ -119,27 +117,23 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image:
-    linear-gradient(rgba(47, 86, 71, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(47, 86, 71, 0.08) 1px, transparent 1px);
-  background-size: 24px 24px;
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.2));
+  background: rgba(0, 0, 0, 0.52);
 }
 
 .landing-hero-content {
   position: relative;
   z-index: 1;
   display: grid;
-  gap: 14px;
+  gap: 8px;
   max-width: 680px;
 }
 
 .landing-badge {
   width: fit-content;
   border-radius: 999px;
-  border: 1px solid #8daea0;
-  background: #eff6f2;
-  color: #28584a;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
   padding: 6px 12px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -151,47 +145,56 @@ body {
   margin-bottom: 0;
   font-size: clamp(2rem, 4vw, 3rem);
   line-height: 1.05;
-  color: #1c3d33;
+  color: #ffffff;
 }
 
 .landing-subheadline {
   margin: 0;
   max-width: 58ch;
   font-size: 1.08rem;
-  color: #34564b;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .primary-cta-group {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(150px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
 .primary-cta-group-horizontal {
-  grid-template-columns: repeat(3, minmax(150px, 1fr));
+  flex-direction: row;
 }
 
 .primary-cta-group-stacked {
-  grid-template-columns: 1fr;
+  flex-direction: column;
 }
 
 .primary-cta-group-responsive {
-  grid-template-columns: repeat(3, minmax(150px, 1fr));
+  flex-direction: row;
 }
 
 .primary-cta {
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  gap: 6px;
   text-decoration: none;
   border: 2px solid #1f4b3f;
-  border-radius: 12px;
-  padding: 11px 14px;
+  border-radius: 8px;
+  padding: 7px 16px;
+  font-size: 0.875rem;
   font-weight: 700;
+  line-height: 1;
   letter-spacing: 0.01em;
-  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease, color 180ms ease;
+  height: 120px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .primary-cta {
+    transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease, color 180ms ease;
+  }
 }
 
 .primary-cta-primary {
@@ -200,8 +203,10 @@ body {
 }
 
 .primary-cta-secondary {
-  background: #eef5f1;
-  color: #1f4b3f;
+  background: linear-gradient(135deg, #8b5e3c, #6b3a1e);
+  color: #ffffff;
+  border-color: #5c3018;
+  box-shadow: 0 3px 10px rgba(107, 58, 30, 0.45);
 }
 
 .primary-cta:hover,
@@ -218,7 +223,7 @@ body {
 
 .primary-cta-secondary:hover,
 .primary-cta-secondary:active {
-  background: #dbece4;
+  background: linear-gradient(135deg, #7b4f2e, #5a2e10);
 }
 
 .themed-asset-wrap {
@@ -398,7 +403,8 @@ input:focus-visible {
   }
 
   .primary-cta-group {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .themed-asset-wrap {

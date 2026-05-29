@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
@@ -12,7 +12,7 @@ describe('HomePage', () => {
       </MemoryRouter>
     );
 
-    const heroRegion = screen.getByRole('region', { name: /build your winning fantasy season/i });
+    const heroRegion = screen.getByRole('region', { name: /play postseason fantasy football/i });
     expect(heroRegion).toBeInTheDocument();
 
     const actionsGroup = within(heroRegion).getByRole('group', { name: /primary actions/i });
@@ -28,7 +28,7 @@ describe('HomePage', () => {
       </MemoryRouter>
     );
 
-    const heroRegion = screen.getByRole('region', { name: /build your winning fantasy season/i });
+    const heroRegion = screen.getByRole('region', { name: /play postseason fantasy football/i });
     expect(within(heroRegion).queryByRole('link', { name: /^login$/i })).not.toBeInTheDocument();
     expect(within(heroRegion).getByRole('link', { name: /browse leagues/i })).toBeInTheDocument();
     expect(within(heroRegion).getByRole('link', { name: /how to play/i })).toBeInTheDocument();
@@ -41,9 +41,8 @@ describe('HomePage', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByRole('heading', { level: 1, name: /build your winning fantasy season/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: /play postseason fantasy football/i })).toBeInTheDocument();
     expect(screen.getByText(/draft smarter, manage matchups with confidence/i)).toBeInTheDocument();
-    expect(screen.getByText(/fantasy football hub/i)).toBeInTheDocument();
   });
 
   it('keeps all primary CTAs visibly emphasized', () => {
@@ -78,31 +77,6 @@ describe('HomePage', () => {
 
     await user.tab();
     expect(screen.getByRole('link', { name: /how to play/i })).toHaveFocus();
-  });
-
-  it('renders football-themed visuals in the hero area', () => {
-    render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
-    );
-
-    expect(screen.getByRole('img', { name: /stylized football stadium lights over a field/i })).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: /american football icon/i })).toBeInTheDocument();
-  });
-
-  it('shows a graceful fallback visual when an asset fails to load', () => {
-    render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
-    );
-
-    const stadiumImage = screen.getByRole('img', { name: /stylized football stadium lights over a field/i });
-    fireEvent.error(stadiumImage);
-
-    expect(screen.getByTestId('themed-asset-fallback-stadium-illustration')).toBeInTheDocument();
-    expect(screen.queryByRole('link', { name: /^login$/i })).not.toBeInTheDocument();
   });
 
   it('preserves CTA usability on mobile-sized viewports', () => {
