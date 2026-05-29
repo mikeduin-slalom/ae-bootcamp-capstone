@@ -8,10 +8,10 @@
 
 **Purpose**: Prepare frontend structure and feature scaffolding for landing page modernization.
 
-- [ ] T001 Create landing page feature asset directory in packages/frontend/src/assets/landing/
-- [ ] T002 Create landing theme token module in packages/frontend/src/constants/landingTheme.js
-- [ ] T003 [P] Create landing asset manifest module in packages/frontend/src/constants/landingAssets.js
-- [ ] T004 [P] Create telemetry event test fixture file in packages/frontend/src/__tests__/fixtures/landingTelemetryEvents.js
+- [X] T001 Create landing page feature asset directory in packages/frontend/src/assets/landing/
+- [X] T002 Create landing theme token module in packages/frontend/src/constants/landingTheme.js
+- [X] T003 [P] Create landing asset manifest module in packages/frontend/src/constants/landingAssets.js
+- [X] T004 [P] Create telemetry event test fixture file in packages/frontend/src/__tests__/fixtures/landingTelemetryEvents.js
 
 ---
 
@@ -21,12 +21,12 @@
 
 **⚠️ CRITICAL**: No user story work should begin until this phase is complete.
 
-- [ ] T005 Create telemetry contract guard module aligned with schema in packages/frontend/src/services/landingTelemetryContract.js
-- [ ] T006 [P] Create device type detection utility in packages/frontend/src/services/deviceType.js
-- [ ] T007 [P] Implement landing telemetry service for page and CTA events in packages/frontend/src/services/landingTelemetryService.js
-- [ ] T008 Create reusable primary CTA button component API in packages/frontend/src/components/PrimaryCtaButton.js
-- [ ] T009 [P] Create reusable CTA group component shell in packages/frontend/src/components/PrimaryCtaGroup.js
-- [ ] T010 Add baseline landing responsive and focus-visible style scaffolding in packages/frontend/src/App.css
+- [X] T005 Create telemetry contract guard module aligned with schema in packages/frontend/src/services/landingTelemetryContract.js
+- [X] T006 [P] Create device type detection utility in packages/frontend/src/services/deviceType.js
+- [X] T007 [P] Implement landing telemetry service for page and CTA events in packages/frontend/src/services/landingTelemetryService.js
+- [X] T008 Create reusable primary CTA button component API in packages/frontend/src/components/PrimaryCtaButton.js
+- [X] T009 [P] Create reusable CTA group component shell in packages/frontend/src/components/PrimaryCtaGroup.js
+- [X] T010 Add baseline landing responsive and focus-visible style scaffolding in packages/frontend/src/App.css
 
 **Checkpoint**: Foundation ready; user stories can now be implemented and tested independently.
 
@@ -40,15 +40,15 @@
 
 ### Tests for User Story 1
 
-- [ ] T011 [P] [US1] Add hero structure and semantic landmark test coverage in packages/frontend/src/__tests__/HomePage.test.js
-- [ ] T012 [P] [US1] Add accessibility assertions for headings and readable content hierarchy in packages/frontend/src/__tests__/HomePage.test.js
+- [X] T011 [P] [US1] Add hero structure and semantic landmark test coverage in packages/frontend/src/__tests__/HomePage.test.js
+- [X] T012 [P] [US1] Add accessibility assertions for headings and readable content hierarchy in packages/frontend/src/__tests__/HomePage.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T013 [P] [US1] Implement landing hero section component in packages/frontend/src/components/LandingHeroSection.js
-- [ ] T014 [US1] Refactor home page composition to use LandingHeroSection in packages/frontend/src/pages/HomePage.js
-- [ ] T015 [US1] Implement modern visual hierarchy styles (typography, spacing, emphasis) in packages/frontend/src/App.css
-- [ ] T016 [US1] Add responsive hero layout behavior for desktop/mobile in packages/frontend/src/index.css
+- [X] T013 [P] [US1] Implement landing hero section component in packages/frontend/src/components/LandingHeroSection.js
+- [X] T014 [US1] Refactor home page composition to use LandingHeroSection in packages/frontend/src/pages/HomePage.js
+- [X] T015 [US1] Implement modern visual hierarchy styles (typography, spacing, emphasis) in packages/frontend/src/App.css
+- [X] T016 [US1] Add responsive hero layout behavior for desktop/mobile in packages/frontend/src/index.css
 
 **Checkpoint**: User Story 1 is complete and independently demoable as the MVP slice.
 
@@ -62,19 +62,19 @@
 
 ### Tests for User Story 2
 
-- [ ] T017 [P] [US2] Add CTA visibility and prominence assertions in packages/frontend/src/__tests__/HomePage.test.js
-- [ ] T018 [P] [US2] Add keyboard focus traversal and focus-visible state tests in packages/frontend/src/__tests__/HomePage.test.js
-- [ ] T019 [P] [US2] Add CTA destination routing tests for Login/Browse/How-to-Play in packages/frontend/src/__tests__/App.test.js
-- [ ] T020 [P] [US2] Add telemetry payload contract tests for CTA click events in packages/frontend/src/__tests__/landingTelemetryService.test.js
+- [X] T017 [P] [US2] Add CTA visibility and prominence assertions in packages/frontend/src/__tests__/HomePage.test.js
+- [X] T018 [P] [US2] Add keyboard focus traversal and focus-visible state tests in packages/frontend/src/__tests__/HomePage.test.js
+- [X] T019 [P] [US2] Add CTA destination routing tests for Login/Browse/How-to-Play in packages/frontend/src/__tests__/App.test.js
+- [X] T020 [P] [US2] Add telemetry payload contract tests for CTA click events in packages/frontend/src/__tests__/landingTelemetryService.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T021 [P] [US2] Implement primary CTA button behavior and variants in packages/frontend/src/components/PrimaryCtaButton.js
-- [ ] T022 [US2] Implement emphasized CTA grouping and layout modes in packages/frontend/src/components/PrimaryCtaGroup.js
-- [ ] T023 [US2] Wire CTA group into landing home route with existing route constants in packages/frontend/src/pages/HomePage.js
-- [ ] T024 [US2] Implement CTA default/hover/press/focus states with WCAG-compliant contrast in packages/frontend/src/App.css
-- [ ] T025 [US2] Emit page_view and CTA click events from landing interactions in packages/frontend/src/pages/HomePage.js
-- [ ] T026 [US2] Enforce analytics schema mapping (`event_name`, `device_type`, `cta_id`) in packages/frontend/src/services/landingTelemetryService.js
+- [X] T021 [P] [US2] Implement primary CTA button behavior and variants in packages/frontend/src/components/PrimaryCtaButton.js
+- [X] T022 [US2] Implement emphasized CTA grouping and layout modes in packages/frontend/src/components/PrimaryCtaGroup.js
+- [X] T023 [US2] Wire CTA group into landing home route with existing route constants in packages/frontend/src/pages/HomePage.js
+- [X] T024 [US2] Implement CTA default/hover/press/focus states with WCAG-compliant contrast in packages/frontend/src/App.css
+- [X] T025 [US2] Emit page_view and CTA click events from landing interactions in packages/frontend/src/pages/HomePage.js
+- [X] T026 [US2] Enforce analytics schema mapping (`event_name`, `device_type`, `cta_id`) in packages/frontend/src/services/landingTelemetryService.js
 
 **Checkpoint**: User Story 2 is complete and independently testable for navigation and interaction outcomes.
 
@@ -88,16 +88,16 @@
 
 ### Tests for User Story 3
 
-- [ ] T027 [P] [US3] Add themed visual rendering tests for hero/supporting areas in packages/frontend/src/__tests__/HomePage.test.js
-- [ ] T028 [P] [US3] Add visual asset failure fallback behavior tests in packages/frontend/src/__tests__/HomePage.test.js
-- [ ] T029 [P] [US3] Add mobile viewport resilience tests for visual/CTA non-overlap in packages/frontend/src/__tests__/HomePage.test.js
+- [X] T027 [P] [US3] Add themed visual rendering tests for hero/supporting areas in packages/frontend/src/__tests__/HomePage.test.js
+- [X] T028 [P] [US3] Add visual asset failure fallback behavior tests in packages/frontend/src/__tests__/HomePage.test.js
+- [X] T029 [P] [US3] Add mobile viewport resilience tests for visual/CTA non-overlap in packages/frontend/src/__tests__/HomePage.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T030 [P] [US3] Add local football icons/illustrations to packages/frontend/src/assets/landing/
-- [ ] T031 [US3] Implement themed visual asset component with fallback modes in packages/frontend/src/components/ThemedVisualAsset.js
-- [ ] T032 [US3] Integrate themed asset composition into LandingHeroSection in packages/frontend/src/components/LandingHeroSection.js
-- [ ] T033 [US3] Implement non-obstructive themed visual placement and graceful fallback styles in packages/frontend/src/App.css
+- [X] T030 [P] [US3] Add local football icons/illustrations to packages/frontend/src/assets/landing/
+- [X] T031 [US3] Implement themed visual asset component with fallback modes in packages/frontend/src/components/ThemedVisualAsset.js
+- [X] T032 [US3] Integrate themed asset composition into LandingHeroSection in packages/frontend/src/components/LandingHeroSection.js
+- [X] T033 [US3] Implement non-obstructive themed visual placement and graceful fallback styles in packages/frontend/src/App.css
 
 **Checkpoint**: User Story 3 is complete and independently testable with resilient themed presentation.
 
@@ -107,11 +107,11 @@
 
 **Purpose**: Final hardening, consistency checks, and delivery verification across all stories.
 
-- [ ] T034 [P] Add final landing-page manual validation checklist updates in specs/002-modern-landing-page/quickstart.md
-- [ ] T035 [P] Document finalized landing visual guidance and CTA emphasis rules in docs/ui-guidelines.md
-- [ ] T036 Add regression assertions for unaffected route behavior in packages/frontend/src/__tests__/App.test.js
-- [ ] T037 Verify and tune landing telemetry schema examples and constraints in specs/002-modern-landing-page/contracts/landing-page-analytics.schema.json
-- [ ] T038 Run frontend test suite and address landing feature regressions in packages/frontend/src/__tests__/
+- [X] T034 [P] Add final landing-page manual validation checklist updates in specs/002-modern-landing-page/quickstart.md
+- [X] T035 [P] Document finalized landing visual guidance and CTA emphasis rules in docs/ui-guidelines.md
+- [X] T036 Add regression assertions for unaffected route behavior in packages/frontend/src/__tests__/App.test.js
+- [X] T037 Verify and tune landing telemetry schema examples and constraints in specs/002-modern-landing-page/contracts/landing-page-analytics.schema.json
+- [X] T038 Run frontend test suite and address landing feature regressions in packages/frontend/src/__tests__/
 
 ---
 

@@ -173,3 +173,22 @@ The visual direction for this product should feel like a modern digital draft bo
 - [x] Responsive behavior is documented
 - [x] Accessibility requirements are explicit
 - [x] Empty/loading/error patterns are consistent
+
+## Landing Page Addendum (Feature 002)
+
+### Hero visual guidance
+- Hero composition must present a badge, one clear H1, one supporting subheadline, and a CTA group in that order.
+- Football visuals are supporting decoration only and must never reduce text readability or block CTA hit targets.
+- Decorative assets should sit behind content and degrade to neutral shapes when loading fails.
+
+### CTA emphasis rules
+- The `Login` CTA is the dominant action and uses the filled primary treatment.
+- `Browse Leagues` and `How to Play` use secondary-emphasis styling while preserving equal keyboard reachability.
+- CTA labels must remain sentence-case and action-first (`Login`, `Browse Leagues`, `How to Play`).
+- CTA interactions must expose default, hover, active, and focus-visible states with WCAG AA contrast.
+- The CTA group must remain visibly clustered as one decision area, not split across unrelated sections.
+
+### Landing responsiveness constraints
+- Desktop: CTA group may render as three columns when space allows.
+- Mobile: CTA group must collapse to one column without overlap from decorative assets.
+- Hero must remain meaningful even when decorative assets are hidden by responsive rules.

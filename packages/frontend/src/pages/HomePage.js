@@ -1,27 +1,59 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
+import LandingHeroSection from '../components/LandingHeroSection';
+import { LANDING_ASSETS } from '../constants/landingAssets';
+import { LANDING_THEME } from '../constants/landingTheme';
 import { ROUTES } from '../constants/routes';
+import { trackLandingCtaClick, trackLandingPageView } from '../services/landingTelemetryService';
 
 function HomePage() {
+  const location = useLocation();
+  const hasTrackedViewRef = useRef(false);
+
+  useEffect(() => {
+    if (!hasTrackedViewRef.current) {
+      trackLandingPageView(location.pathname);
+      hasTrackedViewRef.current = true;
+    }
+  }, [location.pathname]);
+
+  function handleCtaActivate(ctaId) {
+    trackLandingCtaClick({
+      pageRoute: location.pathname,
+      ctaId
+    });
+  }
+
+  const ctas = [
+    {
+      id: 'login',
+      label: 'Login',
+      destinationRoute: ROUTES.login,
+      styleVariant: 'primary'
+    },
+    {
+      id: 'browse_leagues',
+      label: 'Browse Leagues',
+      destinationRoute: ROUTES.leagues,
+      styleVariant: 'secondary'
+    },
+    {
+      id: 'how_to_play',
+      label: 'How to Play',
+      destinationRoute: ROUTES.howToPlay,
+      styleVariant: 'secondary'
+    }
+  ];
+
   return (
-    <section className="page-card">
-      <h1>Welcome to Fantasy League HQ</h1>
-      <p>
-        Use this hub to sign in, browse leagues, and learn how each fantasy season works from draft
-        to scoring.
-      </p>
-      <div className="home-actions">
-        <Link className="cta" to={ROUTES.login}>
-          Go to Login
-        </Link>
-        <Link className="cta" to={ROUTES.leagues}>
-          Browse Leagues
-        </Link>
-        <Link className="cta" to={ROUTES.howToPlay}>
-          How to Play
-        </Link>
-      </div>
-    </section>
+    <LandingHeroSection
+      badgeLabel={LANDING_THEME.badgeLabel}
+      headline={LANDING_THEME.headline}
+      subheadline={LANDING_THEME.subheadline}
+      ctas={ctas}
+      assets={LANDING_ASSETS}
+      onCtaActivate={handleCtaActivate}
+    />
   );
 }
 

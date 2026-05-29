@@ -14,6 +14,7 @@
   "properties": {
     "event_name": {
       "type": "string",
+      "description": "Canonical landing analytics event name.",
       "enum": [
         "page_view",
         "cta_login_click",
@@ -23,14 +24,17 @@
     },
     "timestamp": {
       "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "description": "Event occurrence timestamp in ISO-8601 UTC format."
     },
     "page_route": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "Route path active when the event was emitted (for example `/`)."
     },
     "device_type": {
       "type": "string",
+      "description": "Detected client device classification.",
       "enum": [
         "desktop",
         "mobile",
@@ -43,6 +47,7 @@
         "string",
         "null"
       ],
+      "description": "CTA identifier for click events, null for page_view.",
       "enum": [
         "login",
         "browse_leagues",
@@ -51,6 +56,22 @@
       ]
     }
   },
+  "examples": [
+    {
+      "event_name": "page_view",
+      "timestamp": "2026-05-29T15:00:00.000Z",
+      "page_route": "/",
+      "device_type": "desktop",
+      "cta_id": null
+    },
+    {
+      "event_name": "cta_browse_leagues_click",
+      "timestamp": "2026-05-29T15:01:35.000Z",
+      "page_route": "/",
+      "device_type": "mobile",
+      "cta_id": "browse_leagues"
+    }
+  ],
   "allOf": [
     {
       "if": {

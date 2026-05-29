@@ -7,6 +7,38 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  min-height: 100vh;
+}
+
+@media (max-width: 900px) {
+  .landing-headline {
+    font-size: clamp(1.85rem, 8vw, 2.5rem);
+  }
+
+  .landing-hero-content {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .landing-hero {
+    padding: 18px;
+  }
+
+  .landing-badge {
+    font-size: 0.72rem;
+  }
+
+  .landing-subheadline {
+    font-size: 1rem;
+  }
+
+  .themed-asset-wrap {
+    display: none;
+  }
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

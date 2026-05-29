@@ -56,3 +56,14 @@
 - Frontend test suite passes with repository coverage threshold maintained.
 - Landing analytics payloads conform to the feature contract.
 - Constitution gates remain satisfied in implementation and review.
+
+## 7. Final landing-page validation checklist
+
+- [ ] Hero headline and subheadline are visible at first paint on desktop and mobile.
+- [ ] `Login`, `Browse Leagues`, and `How to Play` appear above the fold in at least one row/stack based on viewport.
+- [ ] Keyboard focus moves through CTAs in logical order with a visible focus ring.
+- [ ] CTA hover/press/focus states remain high contrast and legible.
+- [ ] Football-themed hero visuals render without covering hero text or CTAs.
+- [ ] If hero visuals fail to load, fallback rendering keeps text and CTAs fully usable.
+- [ ] Landing `page_view` event includes `event_name`, `timestamp`, `page_route`, `device_type`, and `cta_id: null`.
+- [ ] CTA click events include `cta_id` and the correct mapped `event_name`.
