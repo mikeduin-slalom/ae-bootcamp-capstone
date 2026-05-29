@@ -21,6 +21,6 @@ This repository is a capstone project baseline using spec-driven development.
 - Keep changes small, testable, and aligned with docs in `docs/`.
 
 <!-- SPECKIT START -->
-For additional context about technologies to be used, project structure,
-shell commands, and other important information, read the current plan
+Current implementation plan: `specs/001-frontend-auth-leagues/plan.md`.
+Use it for technologies, project structure, shell commands, and implementation constraints.
 <!-- SPECKIT END -->

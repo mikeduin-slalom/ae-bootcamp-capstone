@@ -1,0 +1,256 @@
+openapi: 3.0.3
+info:
+  title: Frontend Auth and Leagues API
+  version: 0.1.0
+  description: |
+    Contract for homepage/auth/leagues/how-to-play flows in feature 001-frontend-auth-leagues.
+servers:
+  - url: http://localhost:3030
+paths:
+  /api/auth/login:
+    post:
+      summary: Authenticate user with email/password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/auth/session:
+    get:
+      summary: Get current session state
+      responses:
+        '200':
+          description: Session status returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionResponse'
+  /api/auth/logout:
+    post:
+      summary: Revoke current session
+      responses:
+        '200':
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MutationResponse'
+  /api/leagues:
+    get:
+      summary: List leagues for discovery (read-only for guests)
+      responses:
+        '200':
+          description: League list returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LeagueSummary'
+  /api/leagues/{leagueId}/join:
+    post:
+      summary: Join a joinable league (authenticated only)
+      parameters:
+        - in: path
+          name: leagueId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Joined league
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MutationResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+  /api/leagues/private/invitations/{invitationToken}/accept:
+    post:
+      summary: Accept private league invitation link
+      parameters:
+        - in: path
+          name: invitationToken
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Invitation accepted and membership created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MutationResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+  /api/leagues/{leagueId}/request-join:
+    post:
+      summary: Submit request-to-join for private league
+      parameters:
+        - in: path
+          name: leagueId
+          required: true
+          schema:
+            type: string
+      responses:
+        '202':
+          description: Join request submitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MutationResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+  /api/content/how-to-play:
+    get:
+      summary: Retrieve how-to-play sections
+      responses:
+        '200':
+          description: Ordered instructional content
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/HowToPlaySection'
+
+components:
+  schemas:
+    SessionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+          properties:
+            isAuthenticated:
+              type: boolean
+            user:
+              nullable: true
+              type: object
+              properties:
+                id:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                displayName:
+                  type: string
+    MutationResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+          additionalProperties: true
+        metadata:
+          type: object
+          additionalProperties: true
+    LeagueSummary:
+      type: object
+      required: [id, name, accessType, status]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        accessType:
+          type: string
+          enum: [joinable, private]
+        status:
+          type: string
+          enum: [pending, draft_ready, drafting, scoring_live, completed, cancelled]
+        memberCount:
+          type: integer
+        maxEntrants:
+          type: integer
+    HowToPlaySection:
+      type: object
+      required: [id, title, body, sequence]
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        body:
+          type: string
+        sequence:
+          type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          enum: [false]
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              type: object
+              additionalProperties: true
+
+  responses:
+    ValidationError:
+      description: Request payload failed validation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    UnauthorizedError:
+      description: Authentication required or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFoundError:
+      description: Requested resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ConflictError:
+      description: Request conflicts with current state
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
