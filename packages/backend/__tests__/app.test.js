@@ -206,4 +206,80 @@ describe('Backend API', () => {
       expect(events).toContain('league.join.succeeded');
     });
   });
+
+  describe('Registration endpoint', () => {
+    it('registers a new user and returns 201 with session response shape', async () => {
+      const response = await request(app).post('/api/auth/register').send({
+        displayName: 'New User',
+        email: 'newuser@example.com',
+        password: 'securepass1'
+      });
+
+      expect(response.status).toBe(201);
+      expect(response.body.success).toBe(true);
+      expect(response.body.data.isAuthenticated).toBe(true);
+      expect(response.body.data.user.email).toBe('newuser@example.com');
+      expect(response.body.data.user.displayName).toBe('New User');
+      expect(response.body.data.user).not.toHaveProperty('passwordHash');
+      expect(response.body.data.sessionId).toBeTruthy();
+    });
+
+    it('rejects duplicate email with 409', async () => {
+      const response = await request(app).post('/api/auth/register').send({
+        displayName: 'Alex Dupe',
+        email: 'alex@example.com',
+        password: 'securepass1'
+      });
+
+      expect(response.status).toBe(409);
+      expect(response.body.success).toBe(false);
+      expect(response.body.error.code).toBe('DUPLICATE_EMAIL');
+    });
+
+    it('rejects missing field with 400', async () => {
+      const response = await request(app).post('/api/auth/register').send({
+        email: 'newuser@example.com',
+        password: 'securepass1'
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.error.code).toBe('VALIDATION_ERROR');
+    });
+
+    it('rejects password shorter than 8 characters with 400', async () => {
+      const response = await request(app).post('/api/auth/register').send({
+        displayName: 'New User',
+        email: 'newuser@example.com',
+        password: 'short'
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.error.code).toBe('VALIDATION_ERROR');
+    });
+
+    it('rejects displayName shorter than 2 characters with 400', async () => {
+      const response = await request(app).post('/api/auth/register').send({
+        displayName: 'A',
+        email: 'newuser@example.com',
+        password: 'securepass1'
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.error.code).toBe('VALIDATION_ERROR');
+    });
+
+    it('does not include passwordHash in response data', async () => {
+      const response = await request(app).post('/api/auth/register').send({
+        displayName: 'New User',
+        email: 'newuser@example.com',
+        password: 'securepass1'
+      });
+
+      expect(response.status).toBe(201);
+      expect(response.body.data.user).not.toHaveProperty('passwordHash');
+    });
+  });
 });

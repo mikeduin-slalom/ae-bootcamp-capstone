@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { login as loginRequest, session as sessionRequest, logout as logoutRequest } from '../services/authService';
+import { login as loginRequest, register as registerRequest, session as sessionRequest, logout as logoutRequest } from '../services/authService';
 import { setSessionToken } from '../services/apiClient';
 
 const AuthContext = createContext(null);
@@ -54,6 +54,21 @@ export function AuthProvider({ children }) {
     return response;
   }, []);
 
+  const register = useCallback(async ({ displayName, email, password }) => {
+    const response = await registerRequest({ displayName, email, password });
+
+    const sessionId = response?.data?.sessionId;
+    if (sessionId) {
+      localStorage.setItem(SESSION_STORAGE_KEY, sessionId);
+      setSessionToken(sessionId);
+    }
+
+    setIsAuthenticated(Boolean(response?.data?.isAuthenticated));
+    setUser(response?.data?.user ?? null);
+
+    return response;
+  }, []);
+
   const logout = useCallback(async () => {
     try {
       await logoutRequest();
@@ -71,9 +86,10 @@ export function AuthProvider({ children }) {
       isAuthenticated,
       user,
       login,
+      register,
       logout
     }),
-    [isLoading, isAuthenticated, user, login, logout]
+    [isLoading, isAuthenticated, user, login, register, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

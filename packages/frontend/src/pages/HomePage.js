@@ -26,12 +26,6 @@ function HomePage() {
 
   const ctas = [
     {
-      id: 'login',
-      label: 'Login',
-      destinationRoute: ROUTES.login,
-      styleVariant: 'primary'
-    },
-    {
       id: 'browse_leagues',
       label: 'Browse Leagues',
       destinationRoute: ROUTES.leagues,

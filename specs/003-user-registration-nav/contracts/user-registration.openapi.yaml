@@ -1,0 +1,221 @@
+openapi: 3.0.3
+info:
+  title: User Registration API
+  version: 0.1.0
+  description: |
+    Contract for the user registration endpoint introduced in feature
+    003-user-registration-nav. The registration endpoint follows the same
+    session response shape as POST /api/auth/login and auto-logs the new
+    user in upon successful account creation.
+servers:
+  - url: http://localhost:3030
+paths:
+  /api/auth/register:
+    post:
+      summary: Register a new user account and return an authenticated session
+      description: |
+        Creates a new user record with the supplied display name, email, and
+        password. Passwords are hashed with bcrypt before storage. On success
+        the response is identical in shape to the login response so that the
+        frontend AuthContext can apply the same session state-update logic.
+        The user is automatically logged in (no email verification step).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationRequest'
+            examples:
+              valid:
+                summary: Valid registration payload
+                value:
+                  displayName: "Alex Runner"
+                  email: "newuser@example.com"
+                  password: "securepass1"
+      responses:
+        '201':
+          description: Registration successful; user is now authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionResponse'
+              examples:
+                success:
+                  summary: Successful registration response
+                  value:
+                    success: true
+                    data:
+                      isAuthenticated: true
+                      user:
+                        id: "user-3"
+                        email: "newuser@example.com"
+                        displayName: "Alex Runner"
+                      sessionId: "session-1"
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+components:
+  schemas:
+    RegistrationRequest:
+      type: object
+      required:
+        - displayName
+        - email
+        - password
+      properties:
+        displayName:
+          type: string
+          minLength: 2
+          maxLength: 20
+          description: User-facing display name shown in the nav auth section and profile contexts.
+          example: "Alex Runner"
+        email:
+          type: string
+          format: email
+          description: Unique email address for the account; used as the login identifier.
+          example: "newuser@example.com"
+        password:
+          type: string
+          minLength: 8
+          description: >
+            Plain-text password supplied by the user; the backend hashes this
+            with bcrypt before storage. Never returned or logged.
+          example: "securepass1"
+
+    SessionResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          required:
+            - isAuthenticated
+            - user
+            - sessionId
+          properties:
+            isAuthenticated:
+              type: boolean
+              example: true
+            user:
+              $ref: '#/components/schemas/UserSummary'
+            sessionId:
+              type: string
+              description: Opaque session token; sent as a Bearer token in subsequent requests.
+              example: "session-1"
+
+    UserSummary:
+      type: object
+      required:
+        - id
+        - email
+        - displayName
+      properties:
+        id:
+          type: string
+          example: "user-3"
+        email:
+          type: string
+          format: email
+          example: "newuser@example.com"
+        displayName:
+          type: string
+          example: "Alex Runner"
+
+    ErrorBody:
+      type: object
+      required:
+        - success
+        - error
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              example: "VALIDATION_ERROR"
+            message:
+              type: string
+              example: "Display name must be between 2 and 20 characters."
+            details:
+              type: object
+              additionalProperties: true
+
+  responses:
+    ValidationError:
+      description: One or more fields failed validation (missing, wrong format, or out of range)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorBody'
+          examples:
+            missingField:
+              summary: Missing required field
+              value:
+                success: false
+                error:
+                  code: "VALIDATION_ERROR"
+                  message: "Display name, email, and password are required."
+                  details: {}
+            passwordTooShort:
+              summary: Password below minimum length
+              value:
+                success: false
+                error:
+                  code: "VALIDATION_ERROR"
+                  message: "Password must be at least 8 characters."
+                  details: {}
+            displayNameOutOfRange:
+              summary: Display name length violation
+              value:
+                success: false
+                error:
+                  code: "VALIDATION_ERROR"
+                  message: "Display name must be between 2 and 20 characters."
+                  details: {}
+
+    ConflictError:
+      description: The submitted email address is already associated with an existing account
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorBody'
+          examples:
+            duplicateEmail:
+              summary: Duplicate email
+              value:
+                success: false
+                error:
+                  code: "EMAIL_ALREADY_EXISTS"
+                  message: "An account with this email address already exists."
+                  details: {}
+
+    ServerError:
+      description: An unexpected server-side error occurred
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorBody'
+          examples:
+            internalError:
+              summary: Internal server error
+              value:
+                success: false
+                error:
+                  code: "INTERNAL_ERROR"
+                  message: "An unexpected error occurred. Please try again."
+                  details: {}

@@ -16,9 +16,22 @@ describe('HomePage', () => {
     expect(heroRegion).toBeInTheDocument();
 
     const actionsGroup = within(heroRegion).getByRole('group', { name: /primary actions/i });
-    expect(within(actionsGroup).getByRole('link', { name: /^login$/i })).toHaveAttribute('href', '/login');
+    expect(within(actionsGroup).queryByRole('link', { name: /^login$/i })).not.toBeInTheDocument();
     expect(within(actionsGroup).getByRole('link', { name: /browse leagues/i })).toHaveAttribute('href', '/leagues');
     expect(within(actionsGroup).getByRole('link', { name: /how to play/i })).toHaveAttribute('href', '/how-to-play');
+  });
+
+  it('does not render a Login CTA in the hero section', () => {
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
+
+    const heroRegion = screen.getByRole('region', { name: /build your winning fantasy season/i });
+    expect(within(heroRegion).queryByRole('link', { name: /^login$/i })).not.toBeInTheDocument();
+    expect(within(heroRegion).getByRole('link', { name: /browse leagues/i })).toBeInTheDocument();
+    expect(within(heroRegion).getByRole('link', { name: /how to play/i })).toBeInTheDocument();
   });
 
   it('presents readable heading hierarchy and supporting copy', () => {
@@ -41,7 +54,6 @@ describe('HomePage', () => {
     );
 
     const ctaLinks = [
-      screen.getByRole('link', { name: /^login$/i }),
       screen.getByRole('link', { name: /browse leagues/i }),
       screen.getByRole('link', { name: /how to play/i })
     ];
@@ -49,21 +61,17 @@ describe('HomePage', () => {
     ctaLinks.forEach((link) => {
       expect(link).toHaveClass('primary-cta');
     });
-    expect(ctaLinks[0]).toHaveClass('primary-cta-primary');
+    expect(ctaLinks[0]).toHaveClass('primary-cta-secondary');
     expect(ctaLinks[1]).toHaveClass('primary-cta-secondary');
-    expect(ctaLinks[2]).toHaveClass('primary-cta-secondary');
   });
 
-  it('supports keyboard focus traversal across all CTAs', async () => {
+  it('supports keyboard focus traversal across Browse Leagues and How to Play CTAs', async () => {
     const user = userEvent.setup();
     render(
       <MemoryRouter>
         <HomePage />
       </MemoryRouter>
     );
-
-    await user.tab();
-    expect(screen.getByRole('link', { name: /^login$/i })).toHaveFocus();
 
     await user.tab();
     expect(screen.getByRole('link', { name: /browse leagues/i })).toHaveFocus();
@@ -94,7 +102,7 @@ describe('HomePage', () => {
     fireEvent.error(stadiumImage);
 
     expect(screen.getByTestId('themed-asset-fallback-stadium-illustration')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /^login$/i })).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /^login$/i })).not.toBeInTheDocument();
   });
 
   it('preserves CTA usability on mobile-sized viewports', () => {
@@ -109,7 +117,7 @@ describe('HomePage', () => {
 
     const actionGroup = screen.getByRole('group', { name: /primary actions/i });
     expect(actionGroup).toBeInTheDocument();
-    expect(within(actionGroup).getByRole('link', { name: /^login$/i })).toBeVisible();
+    expect(within(actionGroup).queryByRole('link', { name: /^login$/i })).not.toBeInTheDocument();
     expect(within(actionGroup).getByRole('link', { name: /browse leagues/i })).toBeVisible();
     expect(within(actionGroup).getByRole('link', { name: /how to play/i })).toBeVisible();
 

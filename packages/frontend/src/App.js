@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage';
 import HowToPlayPage from './pages/HowToPlayPage';
 import LeaguesPage from './pages/LeaguesPage';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
 function AppShell() {
   const { isLoading } = useAuth();
@@ -29,6 +30,7 @@ function AppShell() {
         <Routes>
           <Route path={ROUTES.home} element={<HomePage />} />
           <Route path={ROUTES.login} element={<LoginPage />} />
+          <Route path={ROUTES.register} element={<RegisterPage />} />
           <Route path={ROUTES.leagues} element={<LeaguesPage />} />
           <Route path={ROUTES.howToPlay} element={<HowToPlayPage />} />
           <Route path="*" element={<Navigate to={ROUTES.home} replace />} />

@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const { login, getSession, logout } = require('./services/authService');
+const { login, getSession, logout, register } = require('./services/authService');
 const { leagues } = require('./services/dataStore');
 const {
   joinLeague,
@@ -94,7 +94,7 @@ app.get('/api/project', (req, res) => {
   });
 });
 
-app.post('/api/auth/login', (req, res) => {
+app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body || {};
 
   if (!email || !password) {
@@ -102,7 +102,7 @@ app.post('/api/auth/login', (req, res) => {
     return res.status(validation.status).json(validation.body);
   }
 
-  const authResult = login(email, password);
+  const authResult = await login(email, password);
 
   if (!authResult) {
     recordAuditEvent('auth.login.failed', { email });
@@ -118,6 +118,28 @@ app.post('/api/auth/login', (req, res) => {
       isAuthenticated: true,
       user: authResult.user,
       sessionId: authResult.session.sessionId
+    }
+  });
+});
+
+app.post('/api/auth/register', async (req, res) => {
+  const { displayName, email, password } = req.body || {};
+
+  const result = await register(displayName, email, password);
+
+  if (!result.ok) {
+    const error = buildErrorResponse(result.status, result.code, result.message);
+    return res.status(error.status).json(error.body);
+  }
+
+  recordAuditEvent('auth.register.succeeded', { userId: result.user.id });
+
+  return res.status(201).json({
+    success: true,
+    data: {
+      isAuthenticated: true,
+      user: result.user,
+      sessionId: result.session.sessionId
     }
   });
 });

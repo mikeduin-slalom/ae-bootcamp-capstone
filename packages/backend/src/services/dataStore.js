@@ -1,19 +1,21 @@
-const users = [
+const SEED_USERS = [
   {
     id: 'user-1',
     email: 'alex@example.com',
     displayName: 'Alex Runner',
-    passwordHash: 'password123',
+    passwordHash: '$2b$10$bHh0Ys40g1Z5fbXGVsBCb.Y8RewlT4yLLDj8MBAvBA09V71qkIzHS',
     createdAt: '2026-05-01T10:00:00.000Z'
   },
   {
     id: 'user-2',
     email: 'casey@example.com',
     displayName: 'Casey Coach',
-    passwordHash: 'password123',
+    passwordHash: '$2b$10$WgJHX9y1pbldxsg/QtnShOV/9YKM3L10iHKMzjquKoHFdOVN7lnb2',
     createdAt: '2026-05-01T10:30:00.000Z'
   }
 ];
+
+const users = [...SEED_USERS.map((u) => ({ ...u }))];
 
 const leagues = [
   {
@@ -74,6 +76,7 @@ const sessions = new Map();
 const auditEntries = [];
 
 const idCounters = {
+  user: SEED_USERS.length,
   session: 0,
   membership: memberships.length,
   request: 0
@@ -85,6 +88,10 @@ function nextId(kind) {
 }
 
 function resetDataStore() {
+  users.length = 0;
+  SEED_USERS.forEach((u) => users.push({ ...u }));
+  idCounters.user = SEED_USERS.length;
+
   memberships.length = 0;
   memberships.push({
     id: 'membership-1',

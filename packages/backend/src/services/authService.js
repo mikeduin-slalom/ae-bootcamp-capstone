@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const { users, sessions, nextId } = require('./dataStore');
 
 const SESSION_DURATION_MS = 1000 * 60 * 60 * 12;
@@ -41,9 +42,14 @@ function isSessionActive(session) {
   return new Date(session.expiresAt).getTime() > Date.now();
 }
 
-function login(email, password) {
+async function login(email, password) {
   const user = findUserByEmail(email);
-  if (!user || user.passwordHash !== password) {
+  if (!user) {
+    return null;
+  }
+
+  const passwordMatch = await bcrypt.compare(password, user.passwordHash);
+  if (!passwordMatch) {
     return null;
   }
 
@@ -91,8 +97,52 @@ function logout(sessionId) {
   return { success: true };
 }
 
+async function register(displayName, email, password) {
+  if (!displayName || !email || !password) {
+    return { ok: false, status: 400, code: 'VALIDATION_ERROR', message: 'All fields are required.' };
+  }
+
+  const trimmedDisplayName = displayName.trim();
+  const trimmedEmail = email.trim().toLowerCase();
+
+  if (trimmedDisplayName.length < 2 || trimmedDisplayName.length > 20) {
+    return { ok: false, status: 400, code: 'VALIDATION_ERROR', message: 'Display name must be between 2 and 20 characters.' };
+  }
+
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(trimmedEmail)) {
+    return { ok: false, status: 400, code: 'VALIDATION_ERROR', message: 'A valid email address is required.' };
+  }
+
+  if (password.length < 8) {
+    return { ok: false, status: 400, code: 'VALIDATION_ERROR', message: 'Password must be at least 8 characters.' };
+  }
+
+  if (findUserByEmail(trimmedEmail)) {
+    return { ok: false, status: 409, code: 'DUPLICATE_EMAIL', message: 'An account with this email already exists.' };
+  }
+
+  const passwordHash = await bcrypt.hash(password, 10);
+  const newUser = {
+    id: nextId('user'),
+    email: trimmedEmail,
+    displayName: trimmedDisplayName,
+    passwordHash,
+    createdAt: new Date().toISOString()
+  };
+  users.push(newUser);
+
+  const session = createSession(newUser.id);
+  return {
+    ok: true,
+    session,
+    user: sanitizeUser(newUser)
+  };
+}
+
 module.exports = {
   login,
+  register,
   getSession,
   logout
 };

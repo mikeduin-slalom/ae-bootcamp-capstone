@@ -16,7 +16,6 @@ function MainNav() {
     <header className="main-nav-shell">
       <nav className="main-nav" aria-label="Primary">
         <NavLink to={ROUTES.home}>Home</NavLink>
-        <NavLink to={ROUTES.login}>Login</NavLink>
         <NavLink to={ROUTES.leagues}>Leagues</NavLink>
         <NavLink to={ROUTES.howToPlay}>How to Play</NavLink>
       </nav>
@@ -24,13 +23,16 @@ function MainNav() {
       <div className="auth-chip" aria-live="polite">
         {isAuthenticated ? (
           <>
-            <span>Signed in as {user?.displayName || user?.email}</span>
+            <span>{user?.displayName || user?.email}</span>
             <button type="button" onClick={handleLogout}>
               Logout
             </button>
           </>
         ) : (
-          <span>Signed out</span>
+          <>
+            <NavLink to={ROUTES.register} className="nav-link">Register</NavLink>
+            <NavLink to={ROUTES.login} className="nav-link">Login</NavLink>
+          </>
         )}
       </div>
     </header>

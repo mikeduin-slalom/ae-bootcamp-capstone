@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import FeedbackBanner from '../components/FeedbackBanner';
 import { useAuth } from '../context/AuthContext';
 import { ROUTES } from '../constants/routes';
@@ -62,6 +62,9 @@ function LoginPage() {
           {loading ? 'Signing In...' : 'Sign In'}
         </button>
       </form>
+      <p>
+        Don't have an account? <Link to={ROUTES.register}>Create an account</Link>
+      </p>
     </section>
   );
 }

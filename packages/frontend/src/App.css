@@ -22,6 +22,7 @@ body {
   width: 100%;
   max-width: 980px;
   display: grid;
+  grid-template-rows: auto 1fr;
   gap: 18px;
   z-index: 1;
 }
@@ -73,7 +74,8 @@ body {
   flex-wrap: wrap;
 }
 
-.main-nav a {
+.main-nav a,
+.nav-link {
   display: inline-block;
   text-decoration: none;
   color: #1f4b3f;
@@ -84,7 +86,8 @@ body {
   font-weight: 600;
 }
 
-.main-nav a.active {
+.main-nav a.active,
+.nav-link.active {
   background: #1f4b3f;
   color: #f2f9f5;
   border-color: #1f4b3f;

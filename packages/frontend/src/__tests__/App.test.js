@@ -38,11 +38,11 @@ describe('App', () => {
 
     const primaryNav = await screen.findByRole('navigation', { name: /primary/i });
     expect(within(primaryNav).getByRole('link', { name: /^home$/i })).toBeInTheDocument();
-    expect(within(primaryNav).getByRole('link', { name: /^login$/i })).toBeInTheDocument();
+    expect(within(primaryNav).queryByRole('link', { name: /^login$/i })).not.toBeInTheDocument();
     expect(within(primaryNav).getByRole('link', { name: /^leagues$/i })).toBeInTheDocument();
     expect(within(primaryNav).getByRole('link', { name: /^how to play$/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /build your winning fantasy season/i })).toBeInTheDocument();
-    expect(screen.getByText(/signed out/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /^register$/i })).toBeInTheDocument();
   });
 
   test('routes each primary CTA to the expected destination', async () => {
@@ -51,11 +51,7 @@ describe('App', () => {
 
     const heroActions = await screen.findByRole('group', { name: /primary actions/i });
 
-    await user.click(within(heroActions).getByRole('link', { name: /^login$/i }));
-    expect(await screen.findByRole('heading', { name: /^login$/i })).toBeInTheDocument();
-
-    await user.click(screen.getByRole('link', { name: /^home$/i }));
-    await user.click(within(await screen.findByRole('group', { name: /primary actions/i })).getByRole('link', { name: /browse leagues/i }));
+    await user.click(within(heroActions).getByRole('link', { name: /browse leagues/i }));
     expect(await screen.findByRole('heading', { name: /^leagues$/i })).toBeInTheDocument();
 
     await user.click(screen.getByRole('link', { name: /^home$/i }));
@@ -70,7 +66,7 @@ describe('App', () => {
     expect(await screen.findByRole('heading', { name: /build your winning fantasy season/i })).toBeInTheDocument();
     const primaryNav = screen.getByRole('navigation', { name: /primary/i });
     expect(within(primaryNav).getByRole('link', { name: /^home$/i })).toBeInTheDocument();
-    expect(within(primaryNav).getByRole('link', { name: /^login$/i })).toBeInTheDocument();
+    expect(within(primaryNav).queryByRole('link', { name: /^login$/i })).not.toBeInTheDocument();
     expect(within(primaryNav).getByRole('link', { name: /^leagues$/i })).toBeInTheDocument();
     expect(within(primaryNav).getByRole('link', { name: /^how to play$/i })).toBeInTheDocument();
   });
