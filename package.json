@@ -1,7 +1,7 @@
 {
-  "name": "copilot-bootcamp",
+  "name": "capstone-monorepo",
   "version": "1.0.0",
-  "description": "Monorepo with React frontend and Node backend",
+  "description": "Capstone monorepo with React frontend and Node backend",
   "private": true,
   "workspaces": [
     "packages/*"

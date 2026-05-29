@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines the testing strategy and best practices for the todo app. We follow a comprehensive testing approach that ensures code quality, maintainability, and reliability across the entire application.
+This document outlines the testing strategy and best practices for the capstone application. We follow a comprehensive testing approach that ensures code quality, maintainability, and reliability across the entire application.
 
 ## Testing Principles
 

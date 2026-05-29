@@ -2,7 +2,9 @@
 
 ## Introduction
 
-This project is a full-stack JavaScript application designed as a starter template for the Copilot Bootcamp by Slalom. It consists of a React frontend and a Node.js/Express backend, organized in a monorepo structure using npm workspaces.
+This repository is a fresh baseline for a full-stack JavaScript capstone built with a monorepo.
+
+Use this document to describe the product you are building, who it serves, and the outcomes that define success.
 
 ## Architecture
 
@@ -22,7 +24,46 @@ The project follows a monorepo architecture with the following structure:
 ### Backend
 - Node.js
 - Express.js
+- Configurable persistence strategy (SQLite first, PostgreSQL-ready migration path)
 - Jest for testing
+
+## Capstone Definition (Fill In)
+
+### Product Name
+- Fantasy Football Playoffs Draft
+
+### Problem Statement
+- Traditional fantasy platforms focus on regular season and are not readily available for users for NFL Playoffs formats.
+- Friends who want a short, customized playoff experience need fast league setup, synchronous drafting, and transparent scoring.
+- Existing tools do not reliably support playoff snake drafts with real-time countdown-based picks and live standings.
+- This product provides a dedicated playoff fantasy experience from league creation through scoring and standings.
+
+### Target Users
+- Commisioners creating and managing a playoff league
+- Casual participants joining private leagues for friendly competition
+- Competitve users who want clear scoring rules, real-time standings, and customizable features
+
+### Core User Journeys
+- Create and join league: commissioner creates league, shares invite code, participants join.
+- Live snake draft: all users enter draft room, timer enforces pick windows, auto-pick on timeout.
+- Scoring and standings: system ingests player stats, computes team totals, displays ranked standings.
+- Commissioners can also configure various league settings (number of entrants, scoring system, eligible positions for player selection, etc)
+
+### Scope Guardrails
+- Payments, prizes, and wagering.
+- Mobile native apps.
+- Dynasty/keeper formats.
+- Trade system after draft.
+- Public leagues and matchmaking.
+- Multi-season history and analytics dashboards.
+
+### Success Metrics
+- Time to create and fill a league under 5 minutes.
+- Drafts complete without manual admin intervention (though manual admin intervention is supported)
+- Stat ingestion to update standings virtually instantaneously (as fast as live data can be relayed via external APIs) during games
+- Precise scoring with nonexistent scoring discrepancies between leagues and real-life statistics from data providers
+- Experience is enjoyable enough that at least 70% of users return for the following season
+
 
 ## Getting Started
 
@@ -45,4 +86,4 @@ The project uses npm workspaces to manage the monorepo structure. You can:
 
 ## Deployment
 
-General Guidelines, Code Style and Testing Practices will be covered in the bootcamp sessions.
+Deployment approach and environments should be defined once MVP requirements are approved.

@@ -6,10 +6,21 @@ This file contains high-level instructions for GitHub Copilot to follow when gen
 
 ## Documentation Overview
 
-The project documentation will be built during the bootcamp sessions.
+This repository is a capstone project baseline using spec-driven development.
 
 - [Project Overview](../docs/project-overview.md) - Overview of the project
 - [Coding Guidelines](../docs/coding-guidelines.md) - Coding style, quality principles, and best practices
-- [Functional Requirements](../docs/functional-requirements.md) - Core functional requirements for the todo app
-- [UI Guidelines](../docs/ui-guidelines.md) - Design system and UI guidelines for the todo app
+- [Functional Requirements](../docs/functional-requirements.md) - Functional requirements for the capstone product
+- [UI Guidelines](../docs/ui-guidelines.md) - Design and interaction guidelines for the capstone frontend
 - [Testing Guidelines](../docs/testing-guidelines.md) - Testing strategy and best practices
+
+## Working Agreement
+
+- Prefer implementing work from approved specs and plans.
+- Keep frontend and backend concerns separated by package boundaries.
+- Keep changes small, testable, and aligned with docs in `docs/`.
+
+<!-- SPECKIT START -->
+For additional context about technologies to be used, project structure,
+shell commands, and other important information, read the current plan
+<!-- SPECKIT END -->

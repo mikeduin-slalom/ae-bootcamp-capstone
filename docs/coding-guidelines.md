@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines the coding standards, style conventions, and quality principles for the copilot-bootcamp-session-2 project. All developers should follow these guidelines to maintain consistency, readability, and maintainability across the codebase.
+This document outlines coding standards, style conventions, and quality principles for the capstone repository. All developers should follow these guidelines to maintain consistency, readability, and maintainability across the codebase.
 
 ## General Formatting Rules
 
