@@ -8,6 +8,14 @@
 
 **Input**: User description: "Provide a basic frontend UI for users to access my platform, with a homepage, a login/auth system, a \"Leagues\" page with both joinable and private leagues, and a How to Play page that explains the game structure"
 
+## Clarifications
+
+### Session 2026-05-29
+
+- Q: What private-league access mechanism should be required? -> A: Support both invitation link (with a baked-in invite code) and request-to-join functionality
+- Q: What authentication method is in scope for v1? -> A: Email/password login only.
+- Q: How should unauthenticated users access the Leagues page? -> A: Unauthenticated users can view Leagues read-only, but must log in to join any league.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Access Platform Entry Points (Priority: P1)
@@ -43,17 +51,18 @@ A user can authenticate with valid credentials and get feedback for unsuccessful
 
 ### User Story 3 - Discover and Join Leagues (Priority: P2)
 
-An authenticated user can view leagues grouped by joinability and complete the appropriate action for joinable or private leagues.
+A user can view leagues grouped by joinability, and authenticated users can complete the appropriate action for joinable or private leagues.
 
 **Why this priority**: League selection is the core action that connects users to gameplay and community participation.
 
-**Independent Test**: Can be fully tested by viewing the Leagues page while authenticated and interacting with both joinable and private league entries.
+**Independent Test**: Can be fully tested by viewing the Leagues page while unauthenticated (read-only) and authenticated (join flows) and interacting with both joinable and private league entries.
 
 **Acceptance Scenarios**:
 
-1. **Given** an authenticated user opens the Leagues page, **When** league data is shown, **Then** leagues are clearly identified as joinable or private.
+1. **Given** a user opens the Leagues page while unauthenticated, **When** league data is shown, **Then** leagues are visible in read-only mode and clearly identified as joinable or private.
 2. **Given** a league is marked joinable, **When** the user selects Join, **Then** the user is added to that league and sees confirmation.
-3. **Given** a league is marked private, **When** the user selects the private league action, **Then** the user is prompted for the required private access method and receives clear feedback if access is not granted.
+3. **Given** a league is marked private, **When** the user selects the private league action, **Then** the user can use either a valid invitation link or request-to-join flow and receives clear feedback if access is not granted.
+4. **Given** an unauthenticated user attempts to join any league, **When** the user selects Join, **Then** the user is prompted to log in before membership is attempted.
 
 ---
 
@@ -72,10 +81,11 @@ A user can read a How to Play page that explains the game structure, core steps,
 
 ### Edge Cases
 
-- A user attempts to access the Leagues page without being authenticated.
+- An unauthenticated user attempts to join a league from the read-only Leagues page.
 - A user sees no available joinable leagues.
 - A user submits blank login credentials.
-- A private league invitation or access key is invalid, expired, or already used.
+- A private league invitation link is invalid, expired, already used, or assigned to a different user.
+- A private league request-to-join is denied or remains pending without immediate approval.
 - League data fails to load temporarily; the user receives a recoverable error state.
 
 ## Requirements *(mandatory)*
@@ -83,12 +93,12 @@ A user can read a How to Play page that explains the game structure, core steps,
 ### Functional Requirements
 
 - **FR-001**: System MUST provide a homepage that introduces the platform and exposes navigation to Login, Leagues, and How to Play.
-- **FR-002**: System MUST provide a login experience where users can submit credentials and receive immediate success or failure feedback.
+- **FR-002**: System MUST provide an email/password login experience where users can submit credentials and receive immediate success or failure feedback.
 - **FR-003**: System MUST establish authenticated session state for users with valid credentials and display signed-in status in the interface.
 - **FR-004**: System MUST prevent unauthenticated users from performing league membership actions.
-- **FR-005**: System MUST provide a Leagues page that displays league listings and clearly labels each league as joinable or private.
+- **FR-005**: System MUST provide a Leagues page that displays league listings in read-only mode for unauthenticated users and clearly labels each league as joinable or private.
 - **FR-006**: Users MUST be able to join leagues marked as joinable through a direct join action.
-- **FR-007**: System MUST provide a private-league access flow that requires additional access credentials or invitation validation before membership is granted.
+- **FR-007**: System MUST provide private-league access flows that support both invitation-link validation and request-to-join submission before membership is granted.
 - **FR-008**: System MUST provide clear user feedback for league join success, rejection, and recoverable errors.
 - **FR-009**: System MUST provide a How to Play page that explains game structure, phase sequence, and how a user starts participation.
 - **FR-010**: System MUST ensure all primary pages are reachable through persistent navigation.
@@ -120,7 +130,7 @@ A user can read a How to Play page that explains the game structure, core steps,
 
 ## Assumptions
 
-- The platform already has an authoritative user identity source that can validate credentials.
+- The platform already has an identity source that validates email/password credentials.
 - Private league access is governed by an existing invitation, code, or approval mechanism managed by league owners.
 - This feature covers foundational page-level user journeys, not advanced profile management or account recovery flows.
 - Users access the platform through modern browsers on desktop and mobile form factors.
