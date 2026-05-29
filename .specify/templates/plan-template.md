@@ -40,7 +40,11 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- Spec-Driven Delivery: Are user stories, requirements, and tasks traceable to approved docs scope?
+- Frontend/Backend Boundaries: Are package boundaries and API contracts explicit and preserved?
+- Test Discipline: Is a test strategy defined for each user story with expected coverage impact?
+- Reliability and Transparency: Are failure modes, logging, and recovery expectations documented?
+- Simplicity and Maintainability: Is the design the simplest viable approach with guideline alignment?
 
 ## Project Structure
 
