@@ -1,35 +1,21 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import App from '../App';
 
 describe('App', () => {
   afterEach(() => {
-    jest.restoreAllMocks();
+    localStorage.clear();
   });
 
-  test('renders capstone starter heading', async () => {
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: async () => ({ status: 'ok', timestamp: new Date().toISOString() })
-    });
-
+  test('renders app shell with persistent navigation and homepage', async () => {
     render(<App />);
 
-    expect(screen.getByText('Capstone Starter Workspace')).toBeInTheDocument();
-
-    await waitFor(() => {
-      expect(screen.getByText(/Backend healthy at/i)).toBeInTheDocument();
-    });
-  });
-
-  test('shows backend connection failure message on fetch error', async () => {
-    jest.spyOn(global, 'fetch').mockRejectedValue(new Error('network error'));
-
-    render(<App />);
-
-    await waitFor(() => {
-      expect(screen.getByText('State: error')).toBeInTheDocument();
-      expect(screen.getByText('Could not reach backend. Start the API and refresh.')).toBeInTheDocument();
-    });
+    const primaryNav = await screen.findByRole('navigation', { name: /primary/i });
+    expect(within(primaryNav).getByRole('link', { name: /^home$/i })).toBeInTheDocument();
+    expect(within(primaryNav).getByRole('link', { name: /^login$/i })).toBeInTheDocument();
+    expect(within(primaryNav).getByRole('link', { name: /^leagues$/i })).toBeInTheDocument();
+    expect(within(primaryNav).getByRole('link', { name: /^how to play$/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /welcome to fantasy league hq/i })).toBeInTheDocument();
+    expect(screen.getByText(/signed out/i)).toBeInTheDocument();
   });
 });

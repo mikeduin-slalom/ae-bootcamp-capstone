@@ -4,65 +4,218 @@
 
 body {
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(120deg, #f2f6ff 0%, #f8f4ff 100%);
-  color: #1f2937;
+  font-family: 'Trebuchet MS', 'Gill Sans', 'Avenir Next', sans-serif;
+  background: radial-gradient(circle at 20% 20%, #d7efe6 0%, #eef6ea 35%, #fdf7e7 100%);
+  color: #1b1b1b;
 }
 
 .app {
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  padding: 40px 16px;
+  padding: 32px 16px;
+  position: relative;
+  overflow: hidden;
 }
 
 .app-main {
   width: 100%;
-  max-width: 900px;
+  max-width: 980px;
   display: grid;
-  gap: 20px;
+  gap: 18px;
+  z-index: 1;
 }
 
-.hero,
-.status-card,
-.next-steps {
-  background: #ffffff;
-  border: 1px solid #dbe3f1;
-  border-radius: 14px;
-  padding: 24px;
-  box-shadow: 0 8px 30px rgba(30, 64, 175, 0.08);
+.orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(10px);
+  opacity: 0.45;
+}
+
+.orb-left {
+  width: 240px;
+  height: 240px;
+  background: #90d5c2;
+  left: -70px;
+  top: 40px;
+}
+
+.orb-right {
+  width: 280px;
+  height: 280px;
+  background: #ffd9a7;
+  right: -90px;
+  bottom: 50px;
+}
+
+.main-nav-shell,
+.page-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #d6d8c8;
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(44, 66, 57, 0.1);
+  backdrop-filter: blur(4px);
+}
+
+.main-nav-shell {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.main-nav {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.main-nav a {
+  display: inline-block;
+  text-decoration: none;
+  color: #1f4b3f;
+  background: #ebf3ec;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid #bfd5c8;
+  font-weight: 600;
+}
+
+.main-nav a.active {
+  background: #1f4b3f;
+  color: #f2f9f5;
+  border-color: #1f4b3f;
+}
+
+.auth-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-card {
+  padding: 22px;
 }
 
 h1,
-h2 {
+h2,
+h3 {
   margin-top: 0;
 }
 
-h1 {
-  font-size: 2rem;
-  margin-bottom: 10px;
+p,
+li,
+label,
+button,
+input,
+a {
+  font-size: 1rem;
+  line-height: 1.45;
 }
 
-h2 {
-  font-size: 1.25rem;
-  margin-bottom: 12px;
+.home-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-p {
-  line-height: 1.5;
+.cta {
+  text-decoration: none;
+  border: 1px solid #1f4b3f;
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: #1f4b3f;
+  font-weight: 600;
 }
 
-.status-label {
-  font-weight: 700;
+.stacked-form {
+  display: grid;
+  gap: 10px;
+  max-width: 420px;
 }
 
-ol {
+input,
+button {
+  font: inherit;
+}
+
+input {
+  border: 1px solid #8aa496;
+  border-radius: 8px;
+  padding: 10px;
+  background: #f7fbf8;
+}
+
+button {
+  border: 1px solid #1f4b3f;
+  border-radius: 8px;
+  padding: 9px 12px;
+  background: #f3f9f5;
+  color: #193d33;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid #ff8c42;
+  outline-offset: 2px;
+}
+
+.feedback-banner {
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin: 12px 0;
+}
+
+.feedback-error {
+  background: #fbe8e8;
+  border: 1px solid #d18686;
+}
+
+.feedback-warning {
+  background: #fff6dd;
+  border: 1px solid #d3b16b;
+}
+
+.feedback-success {
+  background: #e7f7ec;
+  border: 1px solid #7cb591;
+}
+
+.league-list,
+.how-to-list {
   margin: 0;
   padding-left: 20px;
 }
 
-ol li {
-  margin-bottom: 8px;
+.league-card {
+  border: 1px solid #c8d8cd;
+  border-radius: 10px;
+  padding: 14px;
+  background: #fff;
+  margin-bottom: 12px;
+}
+
+.private-actions {
+  display: grid;
+  gap: 8px;
+}
+
+.private-actions-card {
+  display: grid;
+  gap: 8px;
+  border: 1px dashed #a8bdaa;
+  border-radius: 8px;
+  padding: 10px;
 }
 
 @media (max-width: 640px) {
@@ -70,13 +223,17 @@ ol li {
     padding: 20px 12px;
   }
 
-  .hero,
-  .status-card,
-  .next-steps {
-    padding: 18px;
+  .main-nav-shell,
+  .page-card {
+    padding: 16px;
   }
 
-  h1 {
-    font-size: 1.6rem;
+  .main-nav {
+    width: 100%;
+  }
+
+  .main-nav a {
+    flex: 1 1 44%;
+    text-align: center;
   }
 }

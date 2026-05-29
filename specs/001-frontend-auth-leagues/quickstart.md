@@ -27,7 +27,7 @@
 
 ### Story 2: Email/password authentication
 1. Navigate to Login.
-2. Submit valid credentials and confirm signed-in state appears in UI.
+2. Submit valid credentials (`alex@example.com` / `password123`) and confirm signed-in state appears in UI.
 3. Submit invalid credentials and confirm inline error feedback.
 
 ### Story 3: Leagues discovery and joining
@@ -36,6 +36,10 @@
 3. Sign in and join a joinable league; confirm success state.
 4. Attempt private league access via invitation link; confirm valid and invalid token outcomes.
 5. Submit request-to-join for a private league; confirm pending status feedback.
+
+### Story 3 sample private-league tokens
+- Valid invitation token: `invite-valid-token`
+- Expired invitation token: `invite-expired-token`
 
 ### Story 4: How to Play content
 1. Open How to Play page.
